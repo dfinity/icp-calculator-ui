@@ -1,11 +1,131 @@
-:root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+@font-face {
+  font-family: "Circular";
+  src: url("/font/CircularXXWeb-Regular.woff2") format("woff2");
+  font-style: normal;
+  font-weight: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Circular";
+  src: url("/font/CircularXXWeb-Medium.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Circular";
+  src: url("/font/CircularXXWeb-Bold.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+}
+
+
+/*
+  Josh's Custom CSS Reset
+  https://www.joshwcomeau.com/css/custom-css-reset/
+  
+  - minus the box-sizing: border-box;
+*/
+
+* {
+  margin: 0;
+}
+
+body {
   line-height: 1.5;
-  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+
+ul, ol {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+li {
+  list-style: none;
+}
+
+/* Custom Properties */
+:root {
+  --c-baseHue: 266;
+
+  --cv-netural-10: hsl(var(--c-baseHue) 100% 98%);
+  --cv-neutral-30: hsl(var(--c-baseHue) 26% 95%);
+  --cv-neutral-50: hsl(calc(var(--c-baseHue) * 1.015) 19% 90%);
+  --cv-neutral-80: hsl(calc(var(--c-baseHue) * 0.98) 3% 62%);
+  --cv-neutral-90: hsl(calc(var(--c-baseHue) * 0.81) 8% 12%);
+
+  --cv-purple: hsl(calc(var(--c-baseHue) * 0.96) 38% 45%);
+  --cv-pink: hsl(calc(var(--c-baseHue) * 1.25) 80% 54%);
+  --cv-yellow: hsl(calc(var(--c-baseHue) * 0.13) 95% 59%);
+
+  --cr-background: var(--cv-neutral-30);
+  --cr-onBackground: var(--cv-neutral-90);
+  --cr-onBackground--muted: var(--cv-neutral-80);
+
+  --cr-interaction: var(--cv-purple);
+  --cr-onInteraction: var(--cv-neutral-30);
+  --cr-interacting: var(--cv-pink);
+
+  --cr-card: var(--cv-netural-10);
+  --cr-card-border: var(--cv-neutral-50);
+  --cr-card-border--selected: var(--cv-purple);
+
+  --sv-base: max(62.5%, calc(0.6vh + 0.25rem)); /* 10px equivalent */
+
+  --sr-font-base: 1.6rem;
+  --sr-font-small: 1.4rem;
+
+  --sr-card-radius: 0.8rem;
+  --sr-button-radius: var(--sr-card-radius);
+  --sr-font-default: var(--sv-base);
+  --sr-card-gutter: 1.6rem;
+  --sr-page-gutter: calc(var(--sr-card-gutter) * 2);
+  --sr-button-gutter-x: 2.4rem;
+  --sr-button-gutter-y: 0.6rem;
+  --sr-grid-gutter: 0.8rem;
+
+
+  font-family: "Circular", system-ui, sans-serif;
+  font-size: 62.5%; /* 10px */
+  font-size: var(--sv-base);
+  line-height: 1.5;
+  font-weight: 350;
+  letter-spacing: -0.005em;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color: var(--cr-onBackground);
+  background-color: var(--cr-background);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -14,66 +134,118 @@
 }
 
 a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+  color: var(--cr-interaction);
 }
 
 body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  font-size: var(--sr-font-base);
+  padding: var(--sr-page-gutter);
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+.t-discrete {
+  font-size: var(--sr-font-small);
+  color: var(--cr-onBackground--muted);
+  font-weight: 350;
 }
 
-.card {
-  padding: 2em;
+.t-strong {
+  font-weight: 600;
 }
 
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+button, .button {
+  font-size: var(--sr-font-base);
+  font-weight: 600;
   text-align: center;
-}
-
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
+  padding: var(--sr-button-gutter-y) var(--sr-button-gutter-x);
+  background-color: var(--cr-interaction);
+  color: var(--cr-onInteraction);
   cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  transition: background-color 0.12s ease, color 0.12s ease;
+  border-radius: var(--sr-button-radius);
+  border: none;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+button:hover, .button:hover {
+  background-color: var(--cr-interacting);
+  color: var(--cr-onInteraction);
+}
+
+.l-horizontal {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  flex-wrap: wrap;
+  margin-right: calc(var(--sr-grid-gutter) * -1);
+  margin-bottom: calc(var(--sr-grid-gutter) * -1);
+}
+
+.l-vertical {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--sr-grid-gutter);
+}
+.l-horizontal [class*="l-"] {
+  margin-right: var(--sr-grid-gutter);
+  margin-bottom: var(--sr-grid-gutter);
+}
+
+.l-1\/1 {
+  flex: 0 0 100%;
+  width: calc(100% - var(--sr-grid-gutter));
+}
+
+.l-1\/2 {
+  flex: 0 0 50%;
+  width: calc(50% - var(--sr-grid-gutter));
+}
+
+.l-1\/3 {
+  flex: 0 0 33.333%;
+  width: calc(33.333% - var(--sr-grid-gutter));
+}
+
+.l-2\/3 {
+  flex: 0 0 66.666%;
+  width: calc(66.666% - var(--sr-grid-gutter));
+}
+
+.l-1\/4 {
+  flex: 0 0 calc(25% - var(--sr-grid-gutter));
+  width: calc(25% - var(--sr-grid-gutter));
+}
+
+@media screen and (max-width: 768px) {
+  .l-1\/1\@mobile {
+    width: 100%;
   }
-  a:hover {
-    color: #747bff;
+
+  .l-1\/2\@mobile {
+    flex: 0 0 calc(50% - var(--sr-grid-gutter));
+    width: calc(50% - var(--sr-grid-gutter));
   }
-  button {
-    background-color: #f9f9f9;
+
+  .l-1\/3\@mobile {
+    flex: 0 0 calc(33.333% - var(--sr-grid-gutter));
+    width: calc(33.333% - var(--sr-grid-gutter));
   }
+
+  .l-2\/3\@mobile {
+    flex: 0 0 calc(66.666% - var(--sr-grid-gutter));
+    width: calc(66.666% - var(--sr-grid-gutter));
+  }
+
+  .l-1\/4\@mobile {
+    flex: 0 0 calc(25% - var(--sr-grid-gutter));
+    width: calc(25% - var(--sr-grid-gutter));
+  }
+}
+
+.stretch-vertical {
+  display: flex;
+  align-items: stretch;
+}
+
+.stretch-vertical > * {
+  flex: 1;
 }

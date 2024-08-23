@@ -6,6 +6,12 @@
   export let step: number = 1;
   export let value: number = 0;
   export let unit: string = '';
+  export let unitmultiple: string|null = null;
+  let renderUnit = unit;
+
+  if (!unitmultiple) {
+    unitmultiple = unit;
+  }
 
   const sanitize = (value: number) => {
     // Ensure value is a number
@@ -31,6 +37,14 @@
   }
 
   $: count = value;
+
+  $: {
+    if (count === 1) {
+      renderUnit = unit;
+    } else {
+      renderUnit = unitmultiple;
+    }
+  }
 </script>
 
 <div class={`input-group input-group--${type}`} style={`--value: ${count/max}`}>
@@ -48,7 +62,7 @@
     <div class="input-group__valueunit">
       <span class="input-group__value">{count}</span>
       {#if unit}
-        <span class="input-group__unit">{unit}</span>
+        <span class="input-group__unit">{renderUnit}</span>
       {/if}
     </div>
     <div class="input-group__wrap">
@@ -63,11 +77,7 @@
     display: flex;
     align-items: center;
     gap: var(--sr-input-gutter);
-  }
-
-
-  :global(.input-group + .input-group) {
-    margin-top: var(--sr-input-gutter);
+    align-items: stretch;
   }
 
   .input-group__input {

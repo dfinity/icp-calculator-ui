@@ -49,11 +49,49 @@
         <h2>Coasts</h2>
       </Card>
     </div>
-    <section class="l-1/2 l-1/1@mobile" aria-label="Cart Contents">
-      <Card tag="section">
-        <h2>Resources</h2>
-        <Number count={0} type="increment" min={0} max={100} />
-        <Number count={0} type="range" min={0} max={100} value={50} unit={'CHF'}/>
+    <section class="l-1/2 l-1/1@mobile l-vertical" aria-label="Cart Contents">
+      <Card tag="aside" aria-label="Storage">
+        <div class="l-horizontal">
+          <strong class="l-grow">Storage</strong>
+          <div class="l-1/2 l-shrink">
+            <Number type="increment" min={0} max={100} value="1" />
+          </div>
+        </div>
+        <div class="l-horizontal">
+          <span class="l-grow">Size</span>
+          <div class="l-1/2 l-shrink">
+            <Number type="range" min={0} max={100} value={50} unit={'Mb'}/>
+          </div>
+        </div>
+      </Card>
+
+      <Card tag="aside" aria-label="Storage">
+        <div class="l-horizontal">
+          <strong class="l-grow">Query message</strong>
+          <div class="l-1/2 l-shrink">
+            <Number value={1000} type="increment" min={0} max={10000} />
+          </div>
+        </div>
+        <div class="l-horizontal">
+          <span class="l-grow">Compute</span>
+          <div class="l-1/2 l-shrink">
+            <Number type="range" min={0} max={100} value={50} unit={'Mb'}/>
+          </div>
+        </div>
+
+        <div class="l-horizontal">
+          <span class="l-grow">Compute</span>
+          <div class="l-1/2 l-shrink">
+            <Number type="range" min={0} max={10000} value={500} unit={'Kb'}/>
+          </div>
+        </div>
+
+        <div class="l-horizontal">
+          <span class="l-grow">Repeat</span>
+          <div class="l-1/2 l-shrink">
+            <Number type="range" min={1} max={10} value={1} unit={'Day'} unitmultiple={'Days'} />
+          </div>
+        </div>
       </Card>
     </section>
   </main>

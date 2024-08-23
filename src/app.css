@@ -216,6 +216,13 @@ input[readonly] {
   outline: none;
 }
 
+input[type="text"],
+input[type="number"] {
+  border-radius: var(--sr-button-radius);
+  border: none;
+  box-shadow: inset 0 0 0 1px var(--cr-card-border);
+}
+
 /********** Range Input Styles **********/
 /*Range Reset*/
 input[type="range"] {
@@ -325,6 +332,14 @@ input[type="range"]:focus::-moz-range-thumb {
 .l-1\/4 {
   flex: 0 0 calc(25% - var(--sr-grid-gutter));
   width: calc(25% - var(--sr-grid-gutter));
+}
+
+.l-grow {
+  flex-grow: 1;
+}
+
+.l-shrink {
+  flex-shrink: 1;
 }
 
 @media screen and (max-width: 768px) {

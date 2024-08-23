@@ -79,7 +79,7 @@ li {
 :root {
   --c-baseHue: 266;
 
-  --cv-netural-10: hsl(var(--c-baseHue) 100% 98%);
+  --cv-netural-10: hsl(var(--c-baseHue) 100% 99.5%);
   --cv-netural-20: hsl(var(--c-baseHue) 20% 96%);
   --cv-neutral-30: hsl(var(--c-baseHue) 26% 95%);
   --cv-neutral-50: hsl(calc(var(--c-baseHue) * 1.015) 19% 90%);
@@ -124,6 +124,7 @@ li {
   --sr-button-gutter-x: 2.4rem;
   --sr-button-gutter-y: 0.6rem;
   --sr-grid-gutter: 0.8rem;
+  --sr-input-gutter: calc(var(--sr-grid-gutter) * .5);
 
 
   font-family: "Circular", system-ui, sans-serif;
@@ -207,6 +208,90 @@ button:hover::before,
   margin-right: calc(var(--sr-grid-gutter) * -1);
   margin-bottom: calc(var(--sr-grid-gutter) * -1);
 }
+
+input[readonly] {
+  background: none;
+  border: none;
+  appearance: none;
+  outline: none;
+}
+
+/********** Range Input Styles **********/
+/*Range Reset*/
+input[type="range"] {
+  --size: 1.5rem;
+  --size-dot: 0.5rem;
+  --size-track: 2rem;
+
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+  width: 100%;
+
+  height: var(--size-track);
+  display: block;
+}
+
+/* Removes default focus */
+input[type="range"]:focus {
+  outline: none;
+}
+
+/***** Chrome, Safari, Opera and Edge Chromium styles *****/
+/* slider track */
+input[type="range"]::-webkit-slider-runnable-track {
+  background: transparent;
+  height: var(--size-track);
+}
+
+/* slider thumb */
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  /* Override default look */
+  appearance: none;
+  /* Centers thumb on the track */
+
+  /*custom styles*/
+  background-color: var(--cr-background);
+  height: var(--size);
+  width: var(--size);
+  box-shadow: inset 0 0 0 calc(calc(var(--size) - var(--size-dot)) / 2) var(--cr-interaction); 
+  border-radius: 50%;
+
+  margin-top: calc(var(--size-track) / 2 - var(--size) / 2);
+}
+
+input[type="range"]:focus::-webkit-slider-thumb {
+  outline: 1px solid var(--cr-interaction);
+  outline-offset: 0.125rem;
+}
+
+/******** Firefox styles ********/
+/* slider track */
+input[type="range"]::-moz-range-track {
+  background-color: transparent;
+  height: var(--size-track);
+  top: 2rem;
+}
+
+/* slider thumb */
+input[type="range"]::-moz-range-thumb {
+  border: none;
+
+  /*custom styles*/
+  background-color: var(--cr-background);
+  height: var(--size);
+  width: var(--size);
+  box-shadow: inset 0 0 0 calc(calc(var(--size) - var(--size-dot)) / 2) var(--cr-interaction);
+  border-radius: 50%;
+}
+
+input[type="range"]:focus::-moz-range-thumb {
+  outline: 1px solid var(--cr-interaction);
+  outline-offset: 0.125rem;
+}
+
 
 .l-stack {
   margin-top: var(--sr-grid-gutter);

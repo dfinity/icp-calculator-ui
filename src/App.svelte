@@ -2,6 +2,8 @@
   import Counter from './lib/Counter.svelte'
   import PieChart from './lib/PieChart.svelte'
   import Card from './lib/Card.svelte'
+  
+  import Number from './lib/Number.svelte'
 </script>
 
 <main>
@@ -50,6 +52,8 @@
     <section class="l-1/2 l-1/1@mobile" aria-label="Cart Contents">
       <Card tag="section">
         <h2>Resources</h2>
+        <Number count={0} type="increment" min={0} max={100} />
+        <Number count={0} type="range" min={0} max={100} value={50} unit={'CHF'}/>
       </Card>
     </section>
   </main>

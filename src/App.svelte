@@ -1,20 +1,10 @@
 <script lang="ts">
-  import svelteLogo from './assets/svelte.svg'
-  import viteLogo from '/vite.svg'
   import Counter from './lib/Counter.svelte'
   import PieChart from './lib/PieChart.svelte'
   import Card from './lib/Card.svelte'
 </script>
 
 <main>
-  <!--div>
-    <a href="https://vitejs.dev" target="_blank" rel="noreferrer">
-      <img src={viteLogo} class="logo" alt="Vite Logo" />
-    </a>
-    <a href="https://svelte.dev" target="_blank" rel="noreferrer">
-      <img src={svelteLogo} class="logo svelte" alt="Svelte Logo" />
-    </a>
-  </div-->
   <h1>Dashboard</h1>
 
   <aside>
@@ -51,6 +41,18 @@
     </form>
   </aside>
 
+  <main class="l-horizontal l-stack l-stack--large">
+    <div class="l-1/2 l-1/1@mobile">
+      <Card tag="section">
+        <h2>Coasts</h2>
+      </Card>
+    </div>
+    <section class="l-1/2 l-1/1@mobile" aria-label="Cart Contents">
+      <Card tag="section">
+        <h2>Resources</h2>
+      </Card>
+    </section>
+  </main>
   <div class="card">
     <Counter />
   </div>

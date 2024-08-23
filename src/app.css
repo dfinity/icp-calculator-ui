@@ -80,6 +80,7 @@ li {
   --c-baseHue: 266;
 
   --cv-netural-10: hsl(var(--c-baseHue) 100% 98%);
+  --cv-netural-20: hsl(var(--c-baseHue) 20% 96%);
   --cv-neutral-30: hsl(var(--c-baseHue) 26% 95%);
   --cv-neutral-50: hsl(calc(var(--c-baseHue) * 1.015) 19% 90%);
   --cv-neutral-80: hsl(calc(var(--c-baseHue) * 0.98) 3% 62%);
@@ -96,6 +97,15 @@ li {
   --cr-interaction: var(--cv-purple);
   --cr-onInteraction: var(--cv-neutral-30);
   --cr-interacting: var(--cv-pink);
+
+  --cr-interaction--muted: var(--cv-netural-20);
+  --cr-onInteraction--muted: var(--cv-purple);
+
+  --cr-button: var(--cr-interaction--muted);
+  --cr-onButton: var(--cr-onInteraction--muted);
+
+  --cr-button--primary: var(--cr-interaction);
+  --cr-onButton--primary: var(--cv-onInteraction);
 
   --cr-card: var(--cv-netural-10);
   --cr-card-border: var(--cv-neutral-50);
@@ -152,22 +162,41 @@ body {
   font-weight: 600;
 }
 
-button, .button {
+.button, button {
+  position: relative;
   font-size: var(--sr-font-base);
   font-weight: 600;
   text-align: center;
   padding: var(--sr-button-gutter-y) var(--sr-button-gutter-x);
-  background-color: var(--cr-interaction);
-  color: var(--cr-onInteraction);
+  background-color: var(--cr-button);
+  color: var(--cr-onButton);
   cursor: pointer;
   transition: background-color 0.12s ease, color 0.12s ease;
   border-radius: var(--sr-button-radius);
   border: none;
+  overflow: clip;
 }
 
-button:hover, .button:hover {
-  background-color: var(--cr-interacting);
-  color: var(--cr-onInteraction);
+button::before, .button::before {
+  position: absolute;
+  content: "";
+  top: 100%;
+  left: 50%;
+  width: 50%;
+  aspect-ratio: 1;
+  background: var(--cv-pink);
+  transform: translate(-50%, -50%) translateY(200%);
+  border-radius: 50%;
+  filter: blur(3rem);
+
+  transition: transform .8s cubic-bezier(0.3, .7, 0, 1), filter 0.2s linear;
+  pointer-events: none;
+} 
+
+button:hover::before,
+.button:hover::before {
+  transform: translate(-50%, -50%) translateY(-50%);
+  filter: blur(4rem);
 }
 
 .l-horizontal {
@@ -177,6 +206,14 @@ button:hover, .button:hover {
   flex-wrap: wrap;
   margin-right: calc(var(--sr-grid-gutter) * -1);
   margin-bottom: calc(var(--sr-grid-gutter) * -1);
+}
+
+.l-stack {
+  margin-top: var(--sr-grid-gutter);
+}
+
+.l-stack--large {
+  margin-top: calc(var(--sr-grid-gutter) * 3);
 }
 
 .l-vertical {
@@ -191,23 +228,13 @@ button:hover, .button:hover {
 }
 
 .l-1\/1 {
-  flex: 0 0 100%;
+  flex: calc(100% - var(--sr-grid-gutter));
   width: calc(100% - var(--sr-grid-gutter));
 }
 
 .l-1\/2 {
-  flex: 0 0 50%;
+  flex: 0 0 calc(50% - var(--sr-grid-gutter));
   width: calc(50% - var(--sr-grid-gutter));
-}
-
-.l-1\/3 {
-  flex: 0 0 33.333%;
-  width: calc(33.333% - var(--sr-grid-gutter));
-}
-
-.l-2\/3 {
-  flex: 0 0 66.666%;
-  width: calc(66.666% - var(--sr-grid-gutter));
 }
 
 .l-1\/4 {
@@ -217,7 +244,8 @@ button:hover, .button:hover {
 
 @media screen and (max-width: 768px) {
   .l-1\/1\@mobile {
-    width: 100%;
+    flex: 0 0 calc(100% - var(--sr-grid-gutter));
+    width: calc(100% - var(--sr-grid-gutter));
   }
 
   .l-1\/2\@mobile {

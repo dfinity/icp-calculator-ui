@@ -107,7 +107,7 @@ li {
   --cr-onButton: var(--cr-onInteraction--muted);
 
   --cr-button--primary: var(--cr-interaction);
-  --cr-onButton--primary: var(--cv-onInteraction);
+  --cr-onButton--primary: var(--cr-onInteraction);
 
   --cr-card: var(--cv-netural-10);
   --cr-card-border: var(--cv-neutral-50);
@@ -155,6 +155,12 @@ body {
   padding: var(--sr-page-gutter);
 }
 
+hr {
+  border: none;
+  border-top: 1px solid var(--cr-card-border);
+  margin: var(--sr-grid-gutter) 0;
+}
+
 .t-discrete {
   font-size: var(--sr-font-small);
   color: var(--cr-onBackground--muted);
@@ -178,6 +184,11 @@ body {
   border-radius: var(--sr-button-radius);
   border: none;
   overflow: clip;
+}
+
+.button--full {
+  display: block;
+  width: 100%;
 }
 
 .button--text {
@@ -215,6 +226,12 @@ button:hover::before,
 .button:hover::before {
   transform: translate(-50%, -50%) translateY(-50%);
   filter: blur(4rem);
+}
+
+.button--primary {
+  background-color: var(--cr-button--primary);
+  color: var(--cr-onButton--primary);
+
 }
 
 .l-horizontal {

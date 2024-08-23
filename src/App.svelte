@@ -46,15 +46,22 @@
   <main class="l-horizontal l-stack l-stack--large">
     <div class="l-1/2 l-1/1@mobile">
       <Card tag="section">
-        <h2>Coasts</h2>
+        <div class="l-horizontal">
+          <strong class="l-grow">Days</strong>
+          <div class="l-1/2 l-shrink">
+            <Number type="increment" min={1} max={31} value={1} />
+          </div>
+        </div>
+        <hr class="l-stack" />
+        <button class="button button--primary button--full l-stack">Add Items</button>
       </Card>
     </div>
     <section class="l-1/2 l-1/1@mobile l-vertical" aria-label="Cart Contents">
       <Card tag="aside" aria-label="Storage">
-        <div class="l-horizontal">
+        <div class="l-horizontal l-stack">
           <strong class="l-grow">Storage</strong>
           <div class="l-1/2 l-shrink">
-            <Number type="increment" min={0} max={100} value="1" />
+            <Number type="increment" min={0} max={100} value={1} />
           </div>
         </div>
         <div class="l-horizontal l-stack">

@@ -47,7 +47,7 @@
   }
 </script>
 
-<div class={`input-group input-group--${type}`} style={`--value: ${count/max}`}>
+<div class={`input-group input-group--${type}`} style={`--value: ${(count-1)/(max-1)}`}>
   {#if type === 'increment'}
     <button class="button" on:click={decrement} aria-label="decrement">
       -

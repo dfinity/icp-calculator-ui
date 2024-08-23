@@ -97,8 +97,8 @@
     position: absolute;
     top: 0; 
     bottom: 0;
-    left: var(--sr-button-gutter-x);
-    right: var(--sr-button-gutter-x);
+    left: calc(var(--sr-button-gutter-x) / 4);
+    right: calc(var(--sr-button-gutter-x) / 4);
   }
 
   .input-group--range input[type="range"] {
@@ -132,9 +132,9 @@
     content: '';
     position: absolute;
     height: 1px;
-    left: var(--sr-button-gutter-x); 
-    right: var(--sr-button-gutter-x);
-    background: linear-gradient(to right, var(--cr-interaction) 0% calc(var(--value, 0) * 100%), var(--cr-interaction--muted) calc(var(--value, 0) * 100%) 100%);
+    left: calc(var(--sr-button-gutter-x) / 3); 
+    right: calc(var(--sr-button-gutter-x) / 3);
+    background: linear-gradient(to right, var(--cr-interaction) 0% calc(var(--value, 0) * 100%), rgba(0 0 0 / 20%) calc(var(--value, 0) * 100%) 100%);
     bottom: 0;
   }
 </style>

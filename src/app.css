@@ -187,6 +187,7 @@ body {
 
 .button--danger {
   color: var(--cr-warn);
+  font-size: 0.8em;
 }
 
 .button--right {
@@ -317,7 +318,7 @@ input[type="range"]:focus::-moz-range-thumb {
 
 
 .l-stack {
-  margin-top: var(--sr-grid-gutter);
+  margin-top: calc(var(--sr-grid-gutter) * 2);
 }
 
 .l-stack--large {

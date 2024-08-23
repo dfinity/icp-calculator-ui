@@ -57,12 +57,13 @@
             <Number type="increment" min={0} max={100} value="1" />
           </div>
         </div>
-        <div class="l-horizontal">
+        <div class="l-horizontal l-stack">
           <span class="l-grow">Size</span>
           <div class="l-1/2 l-shrink">
             <Number type="range" min={0} max={100} value={50} unit={'Mb'}/>
           </div>
         </div>
+        <button class="l-stack button button--text button--danger button--right">Remove</button>
       </Card>
 
       <Card tag="aside" aria-label="Storage">
@@ -72,26 +73,28 @@
             <Number value={1000} type="increment" min={0} max={10000} />
           </div>
         </div>
-        <div class="l-horizontal">
+        <div class="l-horizontal l-stack">
           <span class="l-grow">Compute</span>
           <div class="l-1/2 l-shrink">
             <Number type="range" min={0} max={100} value={50} unit={'Mb'}/>
           </div>
         </div>
 
-        <div class="l-horizontal">
-          <span class="l-grow">Compute</span>
+        <div class="l-horizontal l-stack">
+          <span class="l-grow">Network bytes</span>
           <div class="l-1/2 l-shrink">
             <Number type="range" min={0} max={10000} value={500} unit={'Kb'}/>
           </div>
         </div>
 
-        <div class="l-horizontal">
+        <div class="l-horizontal l-stack">
           <span class="l-grow">Repeat</span>
           <div class="l-1/2 l-shrink">
             <Number type="range" min={1} max={10} value={1} unit={'Day'} unitmultiple={'Days'} />
           </div>
         </div>
+
+        <button class="l-stack button button--text button--danger button--right">Remove</button>
       </Card>
     </section>
   </main>

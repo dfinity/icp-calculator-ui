@@ -90,6 +90,8 @@ li {
   --cv-pink: hsl(calc(var(--c-baseHue) * 1.25) 80% 54%);
   --cv-yellow: hsl(calc(var(--c-baseHue) * 0.13) 95% 59%);
 
+  --cr-warn: var(--cv-pink);
+
   --cr-background: var(--cv-neutral-30);
   --cr-onBackground: var(--cv-neutral-90);
   --cr-onBackground--muted: var(--cv-neutral-80);
@@ -166,7 +168,7 @@ body {
 .button, button {
   position: relative;
   font-size: var(--sr-font-base);
-  font-weight: 600;
+  font-weight: normal;
   text-align: center;
   padding: var(--sr-button-gutter-y) var(--sr-button-gutter-x);
   background-color: var(--cr-button);
@@ -176,6 +178,20 @@ body {
   border-radius: var(--sr-button-radius);
   border: none;
   overflow: clip;
+}
+
+.button--text {
+  background: none;
+  padding: 0;
+}
+
+.button--danger {
+  color: var(--cr-warn);
+}
+
+.button--right {
+  display: block;
+  margin-left: auto;
 }
 
 button::before, .button::before {
@@ -314,7 +330,7 @@ input[type="range"]:focus::-moz-range-thumb {
   align-items: stretch;
   gap: var(--sr-grid-gutter);
 }
-.l-horizontal [class*="l-"] {
+.l-horizontal > [class*="l-"] {
   margin-right: var(--sr-grid-gutter);
   margin-bottom: var(--sr-grid-gutter);
 }

@@ -35,7 +35,7 @@
 }
 
 body {
-  line-height: 1.5;
+  line-height: 1.4;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -63,6 +63,18 @@ h4,
 h5,
 h6 {
   overflow-wrap: break-word;
+}
+
+h1, .h1 {
+  font-size: 3.2rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+h2, .h2 {
+  font-size: 1.5;
+  font-weight: 600;
+  line-height: 1.1;
 }
 
 ul, ol {
@@ -128,6 +140,8 @@ li {
   --sr-grid-gutter: 0.8rem;
   --sr-input-gutter: calc(var(--sr-grid-gutter) * .5);
 
+  --sr-icon: 2.4rem;
+
 
   font-family: "Circular", system-ui, sans-serif;
   font-size: 62.5%; /* 10px */
@@ -169,6 +183,7 @@ hr {
 
 .t-strong {
   font-weight: 600;
+  line-height: 1.2;
 }
 
 .button, button {
@@ -234,6 +249,12 @@ button:hover::before,
 
 }
 
+.icon {
+  display: block;
+  width: var(--sr-icon);
+  height: var(--sr-icon);
+}
+
 .l-horizontal {
   display: flex;
   flex-direction: row;
@@ -241,6 +262,10 @@ button:hover::before,
   flex-wrap: wrap;
   margin-right: calc(var(--sr-grid-gutter) * -1);
   margin-bottom: calc(var(--sr-grid-gutter) * -1);
+}
+
+.l-horizontal--center {
+  align-items: center;
 }
 
 input[readonly] {

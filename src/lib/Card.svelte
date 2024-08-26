@@ -35,13 +35,20 @@
     box-shadow: inset 0 0 0 1px var(--c-border);
     transition: box-shadow 0.2s;
     text-align: center;
-    padding-left: calc(var(--sr-card-gutter) * 2 + 1.6rem);
-    padding-right: calc(var(--sr-card-gutter) * 2 + 1.6rem);
+    padding-left: calc(var(--sr-card-gutter) + 1.6rem);
+    padding-right: calc(var(--sr-card-gutter) + 1.6rem);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: .2em;
   }
 
   .card--selectable:has(input:checked) {
     --c-border: var(--cr-card-border--selected);
     box-shadow: inset 0 0 0 1px var(--c-border);
+    color: var(--cr-card-border--selected);
   }
 
   .card--selectable :global(input) {

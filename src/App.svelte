@@ -1,7 +1,15 @@
 <script lang="ts">
-  import PieChart from './lib/PieChart.svelte'
-  import Card from './lib/Card.svelte'
+  type PieChartData = {
+    label: string
+    value: number
+    unit: string
+    color?: string
+  }
   import { spreadArray } from './lib/utils/spreadArray';
+
+  import PieChart from './lib/PieChart.svelte'
+  import PieChartLegend from './lib/PieChartLegend.svelte';
+  import Card from './lib/Card.svelte'
 
   // icons
   import PagesLine from './lib/icons/pages-line.svg.svelte';
@@ -15,23 +23,29 @@
   const colorStops = ['var(--cr-data-1)', 'var(--cr-data-2)', 'var(--cr-data-3)'];
   const colorsNeeded = 7;
 
+  const vizData:PieChartData[] = [
+    { value: 33.123, label: 'Storage', unit: '$' },
+    { value: 12.13, label: 'Canister', unit: '$' },
+    { value: 2.23, label: 'Query Message', unit: '$' },
+    { value: 1.2, label: 'Update Message', unit: '$' },
+    { value: 4.23, label: 'Inter-Canister Call', unit: '$' },
+    { value: 5.23, label: 'Timer', unit: '$' },
+    { value: 12.23, label: 'Something Else', unit: '$' },
+  ];
+
   // but we have X possible categories so lets interpolate the colors, since 
   // CSS supports color mixing we don't need any color lib to do so
   const colorsForCategories = spreadArray(
     colorStops, 
-    colorsNeeded,
+    vizData.length,
     (percent, currentValue, nextValue) => `color-mix(in okLab, ${currentValue} ${(1 - percent) * 100}%, ${nextValue})`
   );
 
-  const vizData = [
-    { value: 33.123, color: colorsForCategories[0], label: 'Storage' },
-    { value: 12.13, color: colorsForCategories[1], label: 'Canister' },
-    { value: 2.23, color: colorsForCategories[2], label: 'Query Message' },
-    { value: 1.2, color: colorsForCategories[3], label: 'Query Message' },
-    { value: 4.23, color: colorsForCategories[4], label: 'Query Message' },
-    { value: 5.23, color: colorsForCategories[5], label: 'Query Message' },
-    { value: 12.23, color: colorsForCategories[6], label: 'Query Message' },
-  ];
+  vizData.forEach((data, index) => {
+    data.color = colorsForCategories[index];
+  });
+
+  
 </script>
 
 <main>
@@ -95,11 +109,16 @@
             <Number type="increment" min={1} max={31} value={1} />
           </div>
         </div>
-        <hr class="l-stack" />
-        <div>
-          <PieChart data={vizData} />
+        <hr class="l-stack l-stack--large" />
+        <div class="l-horizontal l-horizontal--center l-stack l-stack--large">
+          <div class="l-grow">
+            <PieChart data={vizData} />
+          </div>
+          <div class="l-2/3">
+            <PieChartLegend data={vizData} />
+          </div>
         </div>
-        <button class="button button--primary button--full l-stack">Add Items</button>
+        <button class="button button--primary button--full l-stack  l-stack--large">Add Items</button>
       </Card>
     </div>
 

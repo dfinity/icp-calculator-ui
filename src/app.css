@@ -362,6 +362,10 @@ input[type="range"]:focus::-moz-range-thumb {
   outline-offset: 0.125rem;
 }
 
+.t-center {
+  text-align: center;
+}
+
 
 .l-stack {
   margin-top: calc(var(--sr-grid-gutter) * 2);
@@ -377,6 +381,7 @@ input[type="range"]:focus::-moz-range-thumb {
   align-items: stretch;
   gap: var(--sr-grid-gutter);
 }
+
 .l-horizontal > [class*="l-"] {
   margin-right: var(--sr-grid-gutter);
   margin-bottom: var(--sr-grid-gutter);
@@ -395,6 +400,11 @@ input[type="range"]:focus::-moz-range-thumb {
 .l-1\/4 {
   flex: 0 0 calc(25% - var(--sr-grid-gutter));
   width: calc(25% - var(--sr-grid-gutter));
+}
+
+.l-2\/3 {
+  flex: 0 0 calc(66.666% - var(--sr-grid-gutter));
+  width: calc(66.666% - var(--sr-grid-gutter));
 }
 
 .l-grow {

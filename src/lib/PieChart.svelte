@@ -1,9 +1,8 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
-
   type PieChartData = {
     label: string
     value: number
+    unit: string
     color: string
   }
   

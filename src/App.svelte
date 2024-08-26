@@ -1,7 +1,7 @@
 <script lang="ts">
-  import Counter from './lib/Counter.svelte'
   import PieChart from './lib/PieChart.svelte'
   import Card from './lib/Card.svelte'
+  import { spreadArray } from './lib/utils/spreadArray';
 
   // icons
   import PagesLine from './lib/icons/pages-line.svg.svelte';
@@ -9,7 +9,29 @@
   import CoinsLine from './lib/icons/coins-line.svg.svelte';
   import PencilLine from './lib/icons/pencil-line.svg.svelte';
   
-  import Number from './lib/Number.svelte'
+  import Number from './lib/Number.svelte';
+
+  // the design contains 3 colors
+  const colorStops = ['var(--cr-data-1)', 'var(--cr-data-2)', 'var(--cr-data-3)'];
+  const colorsNeeded = 7;
+
+  // but we have X possible categories so lets interpolate the colors, since 
+  // CSS supports color mixing we don't need any color lib to do so
+  const colorsForCategories = spreadArray(
+    colorStops, 
+    colorsNeeded,
+    (percent, currentValue, nextValue) => `color-mix(in okLab, ${currentValue} ${(1 - percent) * 100}%, ${nextValue})`
+  );
+
+  const vizData = [
+    { value: 33.123, color: colorsForCategories[0], label: 'Storage' },
+    { value: 12.13, color: colorsForCategories[1], label: 'Canister' },
+    { value: 2.23, color: colorsForCategories[2], label: 'Query Message' },
+    { value: 1.2, color: colorsForCategories[3], label: 'Query Message' },
+    { value: 4.23, color: colorsForCategories[4], label: 'Query Message' },
+    { value: 5.23, color: colorsForCategories[5], label: 'Query Message' },
+    { value: 12.23, color: colorsForCategories[6], label: 'Query Message' },
+  ];
 </script>
 
 <main>
@@ -64,6 +86,7 @@
   </aside>
 
   <main class="l-horizontal l-stack l-stack--large">
+    <!-- left sidebar -->
     <div class="l-1/2 l-1/1@mobile">
       <Card tag="section">
         <div class="l-horizontal l-horizontal--center">
@@ -73,9 +96,15 @@
           </div>
         </div>
         <hr class="l-stack" />
+        <div>
+          <PieChart data={vizData} />
+        </div>
         <button class="button button--primary button--full l-stack">Add Items</button>
       </Card>
     </div>
+
+
+    <!-- right cart content -->
     <section class="l-1/2 l-1/1@mobile l-vertical l-horizontal--center" aria-label="Cart Contents">
       <Card tag="aside" aria-label="Storage">
         <div class="l-horizontal l-stack">
@@ -125,26 +154,5 @@
       </Card>
     </section>
   </main>
-  <div class="card">
-    <Counter />
-  </div>
-
-  <PieChart data={[
-    { value: 33.123, color: '#6348A0', label: 'Storage' },
-    { value: 12.13, color: '#EE589F', label: 'Canister' },
-    { value: 1.23, color: '#FAA634', label: 'Query Message' }
-  ]} />
-
-  <Card tag="section">
-    <h2>Card Title</h2>
-    <p>Card content goes here</p>
-  </Card> 
-
-  <p>
-    Check out <a href="https://github.com/sveltejs/kit#readme" target="_blank" rel="noreferrer">SvelteKit</a>, the official Svelte app framework powered by Vite!
-  </p>
-
-  <p class="read-the-docs">
-    Click on the Vite and Svelte logos to learn more
-  </p>
+ 
 </main>

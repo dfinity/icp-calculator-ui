@@ -102,6 +102,10 @@ li {
   --cv-pink: hsl(calc(var(--c-baseHue) * 1.25) 80% 54%);
   --cv-yellow: hsl(calc(var(--c-baseHue) * 0.13) 95% 59%);
 
+  --cr-data-1: var(--cv-purple);
+  --cr-data-2: var(--cv-pink);
+  --cr-data-3: var(--cv-yellow);
+
   --cr-warn: var(--cv-pink);
 
   --cr-background: var(--cv-neutral-30);

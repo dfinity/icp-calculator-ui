@@ -2,11 +2,19 @@
   import CheckLine from "./icons/check-line.svg.svelte";
   export let tag = 'div';
   export let selectable = false;
+  export let hasOutline = false;
+  export let isTight = false;
 
   // add card class to restProps
   $$restProps.class = `card ${$$restProps.class || ''}`;
   if (selectable) {
     $$restProps.class += ' card--selectable';
+  }
+  if (hasOutline) {
+    $$restProps.class += ' card--outline';
+  }
+  if (isTight) {
+    $$restProps.class += ' card--tight';
   }
 </script>
 
@@ -28,6 +36,15 @@
     padding: var(--sr-card-gutter);
     background: var(--cr-card);
     border-radius: var(--sr-card-radius);
+  }
+
+  .card--tight {
+    padding: calc(var(--sr-card-gutter) * .25);
+    padding-left: calc(var(--sr-card-gutter) * .75);
+  }
+
+  .card--outline {
+    box-shadow: inset 0 0 0 1px var(--c-border);
   }
 
   .card--selectable {

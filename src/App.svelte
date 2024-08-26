@@ -5,6 +5,12 @@
     unit: string
     color?: string
   }
+
+  type CartItem = {
+    label: string
+    info?: string
+  }
+
   import { spreadArray } from './lib/utils/spreadArray';
 
   import PieChart from './lib/PieChart.svelte'
@@ -21,7 +27,18 @@
 
   // the design contains 3 colors
   const colorStops = ['var(--cr-data-1)', 'var(--cr-data-2)', 'var(--cr-data-3)'];
-  const colorsNeeded = 7;
+
+  const cartItems:CartItem[] = [ // you probably want to add a key called fields and some kind of function to calculate the cost
+    { label: 'Canister', },
+    { label: 'Storage', },
+    { label: 'Query Message', 
+      info: 'Explore coding, from beginner to pro, with our comprehensive guides, tutorials, samples, and API docs for Rust, Motoko, and TypeScript'
+    },
+    { label: 'Update Message', },
+    { label: 'Inter-Canister Call', },
+    { label: 'Timer', },
+    { label: 'Something Else',  },
+  ];
 
   const vizData:PieChartData[] = [
     { value: 33.123, label: 'Storage', unit: '$' },
@@ -45,6 +62,7 @@
     data.color = colorsForCategories[index];
   });
 
+  let cartVisible = false;
   
 </script>
 
@@ -102,23 +120,58 @@
   <main class="l-horizontal l-stack l-stack--large">
     <!-- left sidebar -->
     <div class="l-1/2 l-1/1@mobile">
-      <Card tag="section">
-        <div class="l-horizontal l-horizontal--center">
-          <strong class="l-grow">Days</strong>
-          <div class="l-1/2 l-shrink">
-            <Number type="increment" min={1} max={31} value={1} />
+      <Card tag="section" class="cart {cartVisible ? 'cart--visible' : 'cart--hidden'}">
+        <div class="cart__summary">
+          <article>
+            <div class="t-center">
+              <h1 class="t-discrete">Total cost for period</h1>
+              <h2 class="h2">$405.14</h2>
+            </div>
+          </article>
+
+          <div class="l-horizontal l-horizontal--center l-stack l-stack--large">
+            <strong class="l-grow">Days</strong>
+            <div class="l-1/2 l-shrink">
+              <Number type="increment" min={1} max={31} value={1} />
+            </div>
           </div>
+
+          <hr class="l-stack l-stack--large" />
+          <div class="l-horizontal l-horizontal--center l-stack l-stack--large">
+            <div class="l-grow">
+              <PieChart data={vizData} />
+            </div>
+            <div class="l-2/3">
+              <PieChartLegend data={vizData} />
+            </div>
+          </div>
+          <button class="button button--primary button--full l-stack  l-stack--large" on:click={() => cartVisible = !cartVisible}>Add Items</button>
         </div>
-        <hr class="l-stack l-stack--large" />
-        <div class="l-horizontal l-horizontal--center l-stack l-stack--large">
-          <div class="l-grow">
-            <PieChart data={vizData} />
-          </div>
-          <div class="l-2/3">
-            <PieChartLegend data={vizData} />
-          </div>
-        </div>
-        <button class="button button--primary button--full l-stack  l-stack--large">Add Items</button>
+
+        <aside class="cart__items">
+          <h2 class="t-discrete">Add Items</h2>
+          <ul class="l-stack">
+            {#each cartItems as item}
+              <li class="cart__item">
+                <Card hasOutline={true} isTight={true}>
+                  <div class="cart__entry">
+                    <svelte:element this={item.info ? 'details' : 'div'} class="cart__label">
+                      {#if item.info}
+                        <summary class="h3"><strong class="h3">{item.label}</strong></summary>
+                        <p class="t-discrete l-stack">{item.info}</p>
+                      {:else}
+                        <strong class="h3">{item.label}</strong>
+                      {/if}
+                    </svelte:element>
+                    <button class="button button--outlined cart__button" aria-label="add to cart">+</button>
+                  </div>
+                </Card>
+              </li>
+            {/each}
+          </ul>
+          <button class="button button--secondary button--full l-stack l-stack--large" on:click={() => cartVisible = !cartVisible}>Close</button>
+        </aside>
+      
       </Card>
     </div>
 
@@ -175,3 +228,39 @@
   </main>
  
 </main>
+
+
+<style>
+  .cart__item + .cart__item {
+    margin-top: calc(var(--sr-card-gutter) * .5);
+  }
+
+  .cart__entry {
+    display: flex;
+    align-items: center;
+  }
+
+  .cart__label {
+    flex-grow: 1;
+  }
+
+  .cart__button {
+    align-self: flex-start;
+  }
+
+  :global(.cart--hidden) .cart__items {
+    display: none;
+  }
+
+  :global(.cart--hidden) .cart__summary{
+    display: block;
+  }
+
+  :global(.cart--visible) .cart__items {
+    display: block;
+  }
+
+  :global(.cart--visible) .cart__summary{
+    display: none;
+  }
+</style>

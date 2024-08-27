@@ -116,9 +116,6 @@
   function addItemBlock(label) {
     console.log('addItemBlock', label);
   }
-
-
-  
 </script>
 
 <main>
@@ -133,7 +130,7 @@
             <span class="icon">
               <PagesLine />
             </span>
-            <input type="radio" name="preset" value="1" checked />
+            <input type="radio" name="preset" value="1" checked on:change={() => togglePreset('landing')} />
             <strong class="h2">Landing Page</strong>
              <span class="t-discrete">&nbsp;</span>
           </Card>
@@ -143,7 +140,7 @@
             <span class="icon">
               <GroupLine />
             </span>
-            <input type="radio" name="preset" value="2" />
+            <input type="radio" name="preset" value="2"  on:change={() => togglePreset('social')} />
             <strong class="h2">Social network</strong>
             <span class="t-discrete">1000 users</span>
           </Card>
@@ -153,7 +150,7 @@
             <span class="icon">
               <CoinsLine />
             </span>
-            <input type="radio" name="preset" value="3" />
+            <input type="radio" name="preset" value="3"  on:change={() => togglePreset('exchange')} />
             <strong class="h2">Decentralized exchange</strong>
             <span class="t-discrete">100 token pairs & 1000 users</span>
           </Card>
@@ -163,7 +160,7 @@
             <span class="icon">
               <PencilLine />
             </span>
-            <input type="radio" name="preset" value="4" />
+            <input type="radio" name="preset" value="4"  on:change={() => togglePreset('custom')} />
             <strong class="h2">Custom presets</strong>
              <span class="t-discrete">&nbsp;</span>
           </Card>

@@ -10,6 +10,7 @@
   type CartItem = {
     label: string
     info?: string
+    fields?: { label: string, input: any }[]
   }
 
   // utilities
@@ -37,13 +38,20 @@
     { label: 'Storage', },
     { 
       label: 'Query Message', 
-      info: 'Explore coding, from beginner to pro, with our comprehensive guides, tutorials, samples, and API docs for Rust, Motoko, and TypeScript'
+      info: 'Explore coding, from beginner to pro, with our comprehensive guides, tutorials, samples, and API docs for Rust, Motoko, and TypeScript',
+      fields: [ /*... fields */],
+      calc: () => 0,
+
+
     },
     { label: 'Update Message', },
     { label: 'Inter-Canister Call', },
     { label: 'Timer', },
     { label: 'Something Else',  },
   ];
+
+
+
 
   const vizData:PieChartData[] = [
     { value: 33.123, label: 'Storage', unit: '$' },
@@ -54,6 +62,35 @@
     { value: 5.23, label: 'Timer', unit: '$' },
     { value: 12.23, label: 'Something Else', unit: '$' },
   ];
+
+  $: {
+    // update vizData here
+  }
+
+  let userCart = [
+    { 
+      label: 'Canister',
+      fields: [
+        {
+          label: 'Canister',
+          input: {
+            type: 'increment',
+            value: 1,
+          }
+        },
+        {
+          label: 'Size',
+          input: {
+            list: ['1 Mb', '10 Mb', '100 Mb', '1 Gb', '10 Gb', '100 Gb'],
+          }
+        }
+      ]
+    },
+  ];
+
+  function removeUserCartByIndex(index: number) {
+    userCart = userCart.filter((_, i) => i !== index);
+  }
 
   // but we have X possible categories so lets interpolate the colors, since 
   // CSS supports color mixing we don't need any color lib to do so
@@ -71,6 +108,16 @@
   function toggleCart() {
     cartVisible = !cartVisible;
   }
+
+  function togglePreset(label) {
+    console.log('togglePreset', label);
+  }
+
+  function addItemBlock(label) {
+    console.log('addItemBlock', label);
+  }
+
+
   
 </script>
 
@@ -186,21 +233,22 @@
 
     <!-- right cart content -->
     <section class="l-1/2 l-1/1@mobile l-vertical l-horizontal--center" aria-label="Cart Contents">
-      <Card tag="aside" aria-label="Storage">
-        <div class="l-horizontal l-stack">
-          <strong class="l-grow">Storage</strong>
-          <div class="l-1/2 l-shrink">
-            <Number type="increment" min={0} max={100} value={1} />
-          </div>
-        </div>
-        <div class="l-horizontal l-stack l-horizontal--center">
-          <span class="l-grow">Size</span>
-          <div class="l-1/2 l-shrink">
-            <Number type="range" min={0} max={100} value={50} unit={'Mb'}/>
-          </div>
-        </div>
-        <button class="l-stack button button--text button--danger button--right">Remove</button>
-      </Card>
+      {#each userCart as { label, fields }, i}
+        <Card tag="aside" aria-label={label}>
+          {#each fields as { label, input }, j}
+            <div class="l-horizontal l-stack">
+              <strong class="l-grow">{label}</strong>
+              <div class="l-1/2 l-shrink">
+                <Number {...input} />
+              </div>
+            </div>
+
+          {/each}
+
+          <button class="l-stack button button--text button--danger button--right" on:click={() => removeUserCartByIndex(i)}>Remove</button>
+        </Card>
+      {/each}
+
 
       <Card tag="aside" aria-label="Storage">
         <div class="l-horizontal l-horizontal--center">
@@ -227,6 +275,15 @@
           <span class="l-grow">Repeat</span>
           <div class="l-1/2 l-shrink">
             <Number type="range" min={1} max={10} value={1} unit={'Day'} unitmultiple={'Days'} />
+          </div>
+        </div>
+
+        <div class="l-horizontal l-horizontal--center l-stack">
+          <span class="l-grow">Predefined List</span>
+          <div class="l-1/2 l-shrink">
+            <Number list={
+              ['1 Day', '5 Days', '1 Week', '2 Weeks', '1 Month', '4 Months', '1 Year', '1 Decade']} 
+            />
           </div>
         </div>
 
@@ -260,7 +317,7 @@
     display: none;
   }
 
-  :global(.cart--hidden) .cart__summary{
+  :global(.cart--hidden) .cart__summary {
     display: block;
   }
 
@@ -268,7 +325,7 @@
     display: block;
   }
 
-  :global(.cart--visible) .cart__summary{
+  :global(.cart--visible) .cart__summary {
     display: none;
   }
 </style>

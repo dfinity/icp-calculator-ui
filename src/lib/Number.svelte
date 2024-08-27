@@ -7,10 +7,19 @@
   export let value: number = 0;
   export let unit: string = '';
   export let unitmultiple: string|null = null;
+  export let list: string[] = [];
+
   let renderUnit = unit;
 
   if (!unitmultiple) {
     unitmultiple = unit;
+  }
+
+  if (list.length) {
+    min = 0;
+    max = list.length - 1;
+    type = 'range';
+    unitmultiple = null;
   }
 
   const sanitize = (value: number) => {
@@ -42,7 +51,17 @@
     if (count === 1) {
       renderUnit = unit;
     } else {
-      renderUnit = unitmultiple;
+      renderUnit = unitmultiple as string;
+    }
+  }
+
+  let renderedValue:string|number = count;
+  
+  $: {
+    if (list.length) {
+      renderedValue = list[count];
+    } else {
+      renderedValue = count;
     }
   }
 </script>
@@ -60,7 +79,7 @@
 
   {#if type === 'range'}
     <div class="input-group__valueunit">
-      <span class="input-group__value">{count}</span>
+      <span class="input-group__value">{renderedValue}</span>
       {#if unit}
         <span class="input-group__unit">{renderUnit}</span>
       {/if}

@@ -89,10 +89,11 @@ li {
 
 /* Custom Properties */
 :root {
+  /* design tokens (value tokens) */
   --c-baseHue: 266;
 
-  --cv-netural-10: hsl(var(--c-baseHue) 100% 99.5%);
-  --cv-netural-20: hsl(var(--c-baseHue) 20% 96%);
+  --cv-neutral-10: hsl(var(--c-baseHue) 100% 99.5%);
+  --cv-neutral-20: hsl(var(--c-baseHue) 20% 96%);
   --cv-neutral-30: hsl(var(--c-baseHue) 26% 95%);
   --cv-neutral-50: hsl(calc(var(--c-baseHue) * 1.015) 19% 90%);
   --cv-neutral-80: hsl(calc(var(--c-baseHue) * 0.98) 3% 62%);
@@ -101,7 +102,8 @@ li {
   --cv-purple: hsl(calc(var(--c-baseHue) * 0.96) 38% 45%);
   --cv-pink: hsl(calc(var(--c-baseHue) * 1.25) 80% 54%);
   --cv-yellow: hsl(calc(var(--c-baseHue) * 0.13) 95% 59%);
-
+  
+  /* design tokens (reference tokens) */
   --cr-data-1: var(--cv-purple);
   --cr-data-2: var(--cv-pink);
   --cr-data-3: var(--cv-yellow);
@@ -116,7 +118,7 @@ li {
   --cr-onInteraction: var(--cv-neutral-30);
   --cr-interacting: var(--cv-pink);
 
-  --cr-interaction--muted: var(--cv-netural-20);
+  --cr-interaction--muted: var(--cv-neutral-20);
   --cr-onInteraction--muted: var(--cv-purple);
 
   --cr-button: var(--cr-interaction--muted);
@@ -128,7 +130,7 @@ li {
   --cr-button--secondary: var(--cv-neutral-90);
   --cr-onButton--secondary: var(--cv-neutral-10);
 
-  --cr-card: var(--cv-netural-10);
+  --cr-card: var(--cv-neutral-10);
   --cr-card-border: var(--cv-neutral-50);
   --cr-card-border--selected: var(--cv-purple);
 
@@ -149,7 +151,7 @@ li {
 
   --sr-icon: 2.4rem;
 
-
+  /* base design */
   font-family: "Circular", system-ui, sans-serif;
   font-size: 62.5%; /* 10px */
   font-size: var(--sv-base);

@@ -1,4 +1,5 @@
 <script lang="ts">
+  // types
   type PieChartData = {
     label: string
     value: number
@@ -11,11 +12,14 @@
     info?: string
   }
 
+  // utilities
   import { spreadArray } from './lib/utils/spreadArray';
 
+  // components
   import PieChart from './lib/PieChart.svelte'
   import PieChartLegend from './lib/PieChartLegend.svelte';
   import Card from './lib/Card.svelte'
+  import Number from './lib/Number.svelte';
 
   // icons
   import PagesLine from './lib/icons/pages-line.svg.svelte';
@@ -23,10 +27,10 @@
   import CoinsLine from './lib/icons/coins-line.svg.svelte';
   import PencilLine from './lib/icons/pencil-line.svg.svelte';
   
-  import Number from './lib/Number.svelte';
-
   // the design contains 3 colors
-  const colorStops = ['var(--cr-data-1)', 'var(--cr-data-2)', 'var(--cr-data-3)'];
+  const colorStops = [
+    'var(--cr-data-1)', 'var(--cr-data-2)', 'var(--cr-data-3)'
+  ];
 
   const cartItems:CartItem[] = [ // you probably want to add a key called fields and some kind of function to calculate the cost
     { label: 'Canister', },

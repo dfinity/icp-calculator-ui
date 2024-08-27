@@ -35,7 +35,8 @@
   const cartItems:CartItem[] = [ // you probably want to add a key called fields and some kind of function to calculate the cost
     { label: 'Canister', },
     { label: 'Storage', },
-    { label: 'Query Message', 
+    { 
+      label: 'Query Message', 
       info: 'Explore coding, from beginner to pro, with our comprehensive guides, tutorials, samples, and API docs for Rust, Motoko, and TypeScript'
     },
     { label: 'Update Message', },
@@ -65,8 +66,11 @@
   vizData.forEach((data, index) => {
     data.color = colorsForCategories[index];
   });
-
   let cartVisible = false;
+
+  function toggleCart() {
+    cartVisible = !cartVisible;
+  }
   
 </script>
 
@@ -149,7 +153,7 @@
               <PieChartLegend data={vizData} />
             </div>
           </div>
-          <button class="button button--primary button--full l-stack  l-stack--large" on:click={() => cartVisible = !cartVisible}>Add Items</button>
+          <button class="button button--primary button--full l-stack  l-stack--large" on:click={toggleCart}>Add Items</button>
         </div>
 
         <aside class="cart__items">

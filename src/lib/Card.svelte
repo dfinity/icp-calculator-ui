@@ -4,6 +4,7 @@
   export let selectable = false;
   export let hasOutline = false;
   export let isTight = false;
+  export let highlight = false;
 
   // add card class to restProps
   $: {
@@ -16,6 +17,9 @@
     }
     if (isTight) {
       $$restProps.class += " card--tight";
+    }
+    if (highlight) {
+      $$restProps.class += " card--highlight";
     }
   }
 </script>
@@ -117,4 +121,17 @@
     transform: translate(-50%, -50%) scale(1);
     transition-delay: 0.2s;
   }
+
+  @keyframes highlight-fade {
+  0% {
+    background: var(--cr-card-highlight);
+  }
+  100% {
+    background: var(--cr-card);
+  }
+}
+
+.card--highlight {
+  animation: highlight-fade 3s ease-out 1;
+}
 </style>

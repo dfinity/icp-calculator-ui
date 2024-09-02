@@ -7,13 +7,13 @@ export enum Kind {
 
 export enum Category {
   Canister,
-  ExecutionCall,
-  ExecutionHeartbeat,
-  ExecutionIngress,
-  ExecutionTimer,
-  NetworkCall,
-  NetworkIngress,
   Storage,
+  IngressExecution,
+  IngressNetwork,
+  CallExecution,
+  CallNetwork,
+  Timer,
+  Heartbeat,
   HttpOutcall,
   Total,
 }
@@ -63,20 +63,20 @@ export class Cost {
     switch (this.category) {
       case Category.Canister:
         return "Canister";
-      case Category.ExecutionCall:
-        return "Execution:Call";
-      case Category.ExecutionHeartbeat:
-        return "Execution:Heartbeat";
-      case Category.ExecutionIngress:
-        return "Execution:Ingress";
-      case Category.ExecutionTimer:
-        return "Execution:Timer";
       case Category.Storage:
         return "Storage";
-      case Category.NetworkCall:
-        return "Network:Call";
-      case Category.NetworkIngress:
-        return "Network:Ingress";
+      case Category.CallExecution:
+        return "Call:Exe";
+      case Category.CallNetwork:
+        return "Call:Net";
+      case Category.IngressExecution:
+        return "Ingress:Exe";
+      case Category.IngressNetwork:
+        return "Ingress:Net";
+      case Category.Timer:
+        return "Timer";
+      case Category.Heartbeat:
+        return "Heartbeat";
       case Category.HttpOutcall:
         return "HttpOutcall";
     }

@@ -90,12 +90,16 @@
 
   export let userFeatures: Feature[] = [];
 
+  let newlyAdded = -1;
+
   function removeUserFeature(id: number) {
+    newlyAdded = -1;
     userFeatures = userFeatures.filter((f) => f.id != id);
   }
 
   function addUserFeature(feature: Feature) {
     userFeatures.unshift(feature);
+    newlyAdded = feature.id;
     userFeatures = userFeatures;
   }
 
@@ -119,11 +123,19 @@
     }
     userFeatures = [...presets[label]];
     selectedPreset = label;
+    newlyAdded = -1;
   }
+
+  let cartVisible = false;
+
+  function toggleCart() {
+    cartVisible = !cartVisible;
+  }
+
 </script>
 
 <main>
-  <h1>ICP Pricing Calculator<sup>(beta)</sup></h1>
+  <h1>ICP Pricing Calculator<sup>β</sup></h1>
 
   <aside class="l-stack">
     <form class="l-stack">
@@ -199,7 +211,8 @@
   <main class="l-horizontal l-stack l-stack--large">
     <!-- left sidebar -->
     <div class="l-1/2 l-1/1@mobile">
-      <Card tag="section" class="card">
+      <Card tag="section"  class="cart {cartVisible ? 'cart--visible' : 'cart--hidden'}">
+        <div class="cart__summary">
         <div class="l-horizontal l-horizontal--center">
           <strong class="l-grow">Days</strong>
           <div class="l-1/2 l-shrink">
@@ -222,35 +235,36 @@
               </div>
             {:else}
               <div class="l-grow">
-                Nothing to compute. <br />
-                Add more features using the <strong>+Feature</strong> buttons.
+                Nothing to calculate. Start by adding features. 
               </div>
             {/if}
           </div>
         </div>
+        <button class="button button--primary button--full l-stack  l-stack--large" on:click={toggleCart}>Add a feature</button>
+        </div>
+        <aside class="cart__items">
+        <div class="toolbar">
+          {#each features as feature}
+            <button
+              class="button button--primary l-1/2 l-stack"
+              aria-label="add to cart"
+              on:click={() => {addUserFeature(feature.build()); toggleCart()}}
+              >+{feature.label}</button
+            >
+          {/each}
+        </div>
+        </aside>
       </Card>
     </div>
 
     <!-- right cart content -->
     <section class="l-1/2 l-1/1@mobile" aria-label="Cart Contents">
       <div class="feature-container l-vertical l-horizontal--center">
-        <div class="toolbar">
-          {#each features as feature}
-            <button
-              class="button button--primary"
-              aria-label="add to cart"
-              on:click={() => addUserFeature(feature.build())}
-              >+{feature.label}</button
-            >
-          {/each}
-        </div>
-        {#if userFeatures.length > 0}
-          <hr class="l-stack" />
-        {/if}
+        <h1 class="t-discrete">Configure added features: </h1>
         {#each userFeatures as feature (feature.id)}
-          <Card class="card" tag="aside" aria-label={`feature-${feature.id}`}>
+          <Card class="card" tag="aside" aria-label={`feature-${feature.id}`} highlight={feature.id == newlyAdded}>
             {#each feature.fields() as f, i}
-              <div class="l-horizontal l-stack">
+              <div class="l-horizontal {i > 0 ? "l-stack" : ""}">
                 {#if i == 0}
                   <strong class="l-grow">{f.label}</strong>
                 {:else}
@@ -270,7 +284,7 @@
               </div>
             {/each}
             <button
-              class="l-stack button button--text button--danger button--right"
+              class="button button--text button--danger button--left"
               on:click={() => removeUserFeature(feature.id)}
               >Remove
             </button>
@@ -299,4 +313,21 @@
     border-color: var(--cr-card-border);
     border-radius: var(--sr-card-radius);
   }
+
+  :global(.cart--hidden) .cart__items {
+    display: none;
+  }
+
+  :global(.cart--hidden) .cart__summary {
+    display: block;
+  }
+
+  :global(.cart--visible) .cart__items {
+    display: block;
+  }
+
+  :global(.cart--visible) .cart__summary {
+    display: none;
+  }
+
 </style>

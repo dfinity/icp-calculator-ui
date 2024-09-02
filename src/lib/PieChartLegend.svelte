@@ -36,9 +36,9 @@
   function getKind(kind: Kind) {
     switch (kind) {
       case Kind.OneTime:
-        return "";
+        return "1";
       case Kind.PerDay:
-        return "∞";
+        return "";
     }
   }
 </script>
@@ -53,14 +53,34 @@
         <strong class="piechart-legend__value">{unit}{round(value)}</strong>
       </li>
     {/each}
+
+    {#if data.find(x => x.label.includes(":Exe"))}
     <li>
       <span class="piechart-legend__label">
         <hr />
       </span>
     </li>
     <li>
+      <span class="piechart-legend__label t-discrete">:Exe means Execution</span>
+    </li>
+    <li>
+      <span class="piechart-legend__label t-discrete">:Net means Network</span>
+    </li>
+    {/if}
+    <li>
+      <span class="piechart-legend__label">
+        <hr />
+      </span>
+    </li>
+    <li>
+      <strong class="piechart-legend__label">Total</strong>
+      <strong class="piechart-legend__value"
+        >{total.unit}{round(total.oneTime + total.recurrent)}</strong
+      >
+    </li>
+    <li>
       <span class="piechart-legend__label"
-        >One-time<sup>{getKind(Kind.OneTime)}</sup></span
+        >- One-time<sup>{getKind(Kind.OneTime)}</sup></span
       >
       <strong class="piechart-legend__value"
         >{total.unit}{round(total.oneTime)}</strong
@@ -68,16 +88,10 @@
     </li>
     <li>
       <span class="piechart-legend__label">
-        Recurrent<sup>{getKind(Kind.PerDay)}</sup>
+        - Recurrent<sup>{getKind(Kind.PerDay)}</sup>
       </span>
       <strong class="piechart-legend__value"
         >{total.unit}{round(total.recurrent)}</strong
-      >
-    </li>
-    <li>
-      <strong class="piechart-legend__label">Total</strong>
-      <strong class="piechart-legend__value"
-        >{total.unit}{round(total.oneTime + total.recurrent)}</strong
       >
     </li>
   </ol>
@@ -87,7 +101,6 @@
   .piechart-legend ol {
     display: flex;
     flex-direction: column;
-    margin-left: 2ex;
   }
 
   .piechart-legend__label {

@@ -223,14 +223,14 @@ export class Ingress implements Feature {
     result.add(
       new Cost(
         kind,
-        Category.ExecutionIngress,
+        Category.IngressExecution,
         execution(Mode.Replicated, instructions, count),
       ),
     );
     result.add(
       new Cost(
         kind,
-        Category.NetworkIngress,
+        Category.IngressNetwork,
         message(Mode.Replicated, Direction.UserToCanister, network, count),
       ),
     );
@@ -319,14 +319,14 @@ export class Call implements Feature {
     result.add(
       new Cost(
         kind,
-        Category.ExecutionCall,
+        Category.CallExecution,
         execution(Mode.Replicated, instructions, count),
       ),
     );
     result.add(
       new Cost(
         kind,
-        Category.NetworkCall,
+        Category.CallNetwork,
         message(Mode.Replicated, Direction.CanisterToCanister, network, count),
       ),
     );
@@ -389,7 +389,7 @@ export class Timer implements Feature {
     result.add(
       new Cost(
         kind,
-        Category.ExecutionTimer,
+        Category.Timer,
         execution(Mode.Replicated, instructions, count),
       ),
     );
@@ -438,7 +438,7 @@ export class Heartbeat implements Feature {
     result.add(
       new Cost(
         Kind.PerDay,
-        Category.ExecutionHeartbeat,
+        Category.Heartbeat,
         execution(Mode.Replicated, instructions, count),
       ),
     );

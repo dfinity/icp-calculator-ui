@@ -68,14 +68,14 @@ h6 {
 h1,
 .h1 {
   font-size: 3.2rem;
-  font-weight: 600;
+  font-weight: 400;
   line-height: 1.2;
 }
 
 h2,
 .h2 {
   font-size: 1.5;
-  font-weight: 600;
+  font-weight: 400;
   line-height: 1.1;
 }
 
@@ -134,6 +134,7 @@ li {
   --cr-onButton--secondary: var(--cv-neutral-10);
 
   --cr-card: var(--cv-neutral-10);
+  --cr-card-highlight: var(--cv-yellow);
   --cr-card-border: var(--cv-neutral-50);
   --cr-card-border--selected: var(--cv-purple);
 

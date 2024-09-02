@@ -16,15 +16,15 @@ const K: number = 1000;
 const M: number = 1000 * K;
 const B: number = 1000 * M;
 
-let next_id: number = 0;
+let nextId: number = 0;
 
-export type Field = {
+export interface Field {
   label: string;
   type: "increment" | "range";
   values?: string[];
   default: number;
   onChange: (value: number) => void;
-};
+}
 
 export interface Feature {
   id: number;
@@ -75,7 +75,7 @@ export class Canister implements Feature {
   count: number;
 
   constructor() {
-    this.id = next_id++;
+    this.id = nextId++;
     this.count = 1;
   }
 
@@ -91,7 +91,7 @@ export class Canister implements Feature {
   }
 
   cost(): Breakdown {
-    let result = new Breakdown();
+    const result = new Breakdown();
     result.add(new Cost(Kind.OneTime, Category.Canister, canister(this.count)));
     return result;
   }
@@ -104,7 +104,7 @@ export class Storage implements Feature {
   storage_values: number[];
 
   constructor() {
-    this.id = next_id++;
+    this.id = nextId++;
     this.count = 1;
     this.storage_index = 2;
     this.storage_values = storageValues();
@@ -129,8 +129,8 @@ export class Storage implements Feature {
   }
 
   cost(): Breakdown {
-    let result = new Breakdown();
-    let bytes = this.storage_values[this.storage_index] as Bytes;
+    const result = new Breakdown();
+    const bytes = this.storage_values[this.storage_index] as Bytes;
     result.add(
       new Cost(
         Kind.PerDay,
@@ -159,7 +159,7 @@ export class Ingress implements Feature {
   repeat_values: number[];
 
   constructor() {
-    this.id = next_id++;
+    this.id = nextId++;
     this.count = 100;
     this.instruction_index = 3;
     this.instruction_values = instructionValues();
@@ -211,15 +211,15 @@ export class Ingress implements Feature {
   }
 
   cost(): Breakdown {
-    let result = new Breakdown();
-    let instructions = this.instruction_values[
+    const result = new Breakdown();
+    const instructions = this.instruction_values[
       this.instruction_index
     ] as Instructions;
-    let network = (this.request_values[this.request_index] +
+    const network = (this.request_values[this.request_index] +
       this.response_values[this.response_index]) as Bytes;
-    let repeat = this.repeat_values[this.repeat_index];
-    let count = repeat == 0 ? this.count : this.count * repeat;
-    let kind = repeat == 0 ? Kind.OneTime : Kind.PerDay;
+    const repeat = this.repeat_values[this.repeat_index];
+    const count = repeat === 0 ? this.count : this.count * repeat;
+    const kind = repeat === 0 ? Kind.OneTime : Kind.PerDay;
     result.add(
       new Cost(
         kind,
@@ -255,7 +255,7 @@ export class Call implements Feature {
   repeat_values: number[];
 
   constructor() {
-    this.id = next_id++;
+    this.id = nextId++;
     this.count = 100;
     this.instruction_index = 3;
     this.instruction_values = instructionValues();
@@ -307,15 +307,15 @@ export class Call implements Feature {
   }
 
   cost(): Breakdown {
-    let result = new Breakdown();
-    let instructions = this.instruction_values[
+    const result = new Breakdown();
+    const instructions = this.instruction_values[
       this.instruction_index
     ] as Instructions;
-    let network = (this.request_values[this.request_index] +
+    const network = (this.request_values[this.request_index] +
       this.response_values[this.response_index]) as Bytes;
-    let repeat = this.repeat_values[this.repeat_index];
-    let count = repeat == 0 ? this.count : this.count * repeat;
-    let kind = repeat == 0 ? Kind.OneTime : Kind.PerDay;
+    const repeat = this.repeat_values[this.repeat_index];
+    const count = repeat === 0 ? this.count : this.count * repeat;
+    const kind = repeat === 0 ? Kind.OneTime : Kind.PerDay;
     result.add(
       new Cost(
         kind,
@@ -345,7 +345,7 @@ export class Timer implements Feature {
   repeat_values: number[];
 
   constructor() {
-    this.id = next_id++;
+    this.id = nextId++;
     this.count = 1;
     this.instruction_index = 3;
     this.instruction_values = instructionValues();
@@ -379,13 +379,13 @@ export class Timer implements Feature {
   }
 
   cost(): Breakdown {
-    let result = new Breakdown();
-    let instructions = this.instruction_values[
+    const result = new Breakdown();
+    const instructions = this.instruction_values[
       this.instruction_index
     ] as Instructions;
-    let repeat = this.repeat_values[this.repeat_index];
-    let count = repeat == 0 ? this.count : this.count * repeat;
-    let kind = repeat == 0 ? Kind.OneTime : Kind.PerDay;
+    const repeat = this.repeat_values[this.repeat_index];
+    const count = repeat === 0 ? this.count : this.count * repeat;
+    const kind = repeat === 0 ? Kind.OneTime : Kind.PerDay;
     result.add(
       new Cost(
         kind,
@@ -405,7 +405,7 @@ export class Heartbeat implements Feature {
   instruction_values: number[];
 
   constructor() {
-    this.id = next_id++;
+    this.id = nextId++;
     this.count = 1;
     this.instruction_index = 3;
     this.instruction_values = instructionValues();
@@ -430,11 +430,11 @@ export class Heartbeat implements Feature {
   }
 
   cost(): Breakdown {
-    let result = new Breakdown();
-    let instructions = this.instruction_values[
+    const result = new Breakdown();
+    const instructions = this.instruction_values[
       this.instruction_index
     ] as Instructions;
-    let count = 24 * 3600;
+    const count = 24 * 3600;
     result.add(
       new Cost(
         Kind.PerDay,
@@ -459,7 +459,7 @@ export class HttpOutcall implements Feature {
   repeat_values: number[];
 
   constructor() {
-    this.id = next_id++;
+    this.id = nextId++;
     this.count = 1;
     this.request_index = 4;
     this.request_values = networkValues();
@@ -502,16 +502,16 @@ export class HttpOutcall implements Feature {
   }
 
   cost(): Breakdown {
-    let result = new Breakdown();
-    let request = this.request_values[this.request_index] as Bytes;
-    let response = this.response_values[this.response_index] as Bytes;
-    let repeat = this.repeat_values[this.repeat_index];
+    const result = new Breakdown();
+    const request = this.request_values[this.request_index] as Bytes;
+    const response = this.response_values[this.response_index] as Bytes;
+    const repeat = this.repeat_values[this.repeat_index];
 
-    let count = repeat == 0 ? this.count : this.count * repeat;
-    let kind = repeat == 0 ? Kind.OneTime : Kind.PerDay;
+    const count = repeat === 0 ? this.count : this.count * repeat;
+    const kind = repeat === 0 ? Kind.OneTime : Kind.PerDay;
     result.add(
       new Cost(
-        Kind.PerDay,
+        kind,
         Category.HttpOutcall,
         httpOutcall(request, response, count),
       ),
@@ -520,19 +520,19 @@ export class HttpOutcall implements Feature {
   }
 }
 
-function storageValues() {
+function storageValues(): number[] {
   return [100 * KB, 1 * MB, 10 * MB, 100 * MB, 1 * GB, 10 * GB, 100 * GB];
 }
 
-function instructionValues() {
+function instructionValues(): number[] {
   return [0, 100 * K, 500 * K, 1 * M, 10 * M, 100 * M, 1 * B, 10 * B, 100 * B];
 }
 
-function networkValues() {
+function networkValues(): number[] {
   return [0, 256, 512, 1 * KB, 10 * KB, 100 * KB, 1 * MB, 2 * MB];
 }
 
-function bytesToString(bytes: number) {
+function bytesToString(bytes: number): string {
   if (bytes >= GB) {
     return `${bytes / GB} GB`;
   }
@@ -545,7 +545,7 @@ function bytesToString(bytes: number) {
   return `${bytes}`;
 }
 
-function countToString(value: number) {
+function countToString(value: number): string {
   if (value >= B) {
     return `${value / B} B`;
   }
@@ -558,7 +558,7 @@ function countToString(value: number) {
   return `${value}`;
 }
 
-const REPEAT: [number, string][] = [
+const REPEAT: Array<[number, string]> = [
   [0, "Never"],
   [1 / 28, "Every 4 weeks"],
   [1 / 14, "Every 2 weeks"],
@@ -573,6 +573,6 @@ function repeatValues(): number[] {
 }
 
 function repeatToString(value: number): string {
-  let elem = REPEAT.find((x) => x[0] == value) || [0, "Never"];
+  const elem = REPEAT.find((x) => x[0] === value) ?? [0, "Never"];
   return elem[1];
 }

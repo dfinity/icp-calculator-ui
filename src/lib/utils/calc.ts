@@ -1,21 +1,21 @@
 import {
   calculators,
-  Direction,
-  Duration,
-  Mode,
+  type Direction,
+  type Duration,
+  type Mode,
   type Bytes,
   type Cycles,
   type Instructions,
   type USD,
 } from "@dfinity/icp-calculator";
-import { Amount } from "./cost";
+import { type Amount } from "./cost";
 
-let calcUSD = calculators().calculatorUSD;
-let calcCycles = calculators().calculatorCycles;
+const calcUSD = calculators().calculatorUSD;
+const calcCycles = calculators().calculatorCycles;
 
 export function canister(count: number): Amount {
-  let usd = (calcUSD.canisterCreation() * count) as USD;
-  let cycles = (calcCycles.canisterCreation() * count) as Cycles;
+  const usd = (calcUSD.canisterCreation() * count) as USD;
+  const cycles = (calcCycles.canisterCreation() * count) as Cycles;
   return { usd, cycles };
 }
 
@@ -24,8 +24,8 @@ export function execution(
   instructions: Instructions,
   count: number,
 ): Amount {
-  let usd = (calcUSD.execution(mode, instructions) * count) as USD;
-  let cycles = (calcCycles.execution(mode, instructions) * count) as Cycles;
+  const usd = (calcUSD.execution(mode, instructions) * count) as USD;
+  const cycles = (calcCycles.execution(mode, instructions) * count) as Cycles;
   return { usd, cycles };
 }
 
@@ -34,8 +34,8 @@ export function storage(
   duration: Duration,
   count: number,
 ): Amount {
-  let usd = (calcUSD.storage(size, duration) * count) as USD;
-  let cycles = (calcCycles.storage(size, duration) * count) as Cycles;
+  const usd = (calcUSD.storage(size, duration) * count) as USD;
+  const cycles = (calcCycles.storage(size, duration) * count) as Cycles;
   return { usd, cycles };
 }
 
@@ -45,8 +45,8 @@ export function message(
   bytes: Bytes,
   count: number,
 ): Amount {
-  let usd = (calcUSD.message(mode, direction, bytes) * count) as USD;
-  let cycles = (calcCycles.message(mode, direction, bytes) * count) as Cycles;
+  const usd = (calcUSD.message(mode, direction, bytes) * count) as USD;
+  const cycles = (calcCycles.message(mode, direction, bytes) * count) as Cycles;
   return { usd, cycles };
 }
 
@@ -55,7 +55,7 @@ export function httpOutcall(
   response: Bytes,
   count: number,
 ): Amount {
-  let usd = (calcUSD.httpOutcall(request, response) * count) as USD;
-  let cycles = (calcCycles.httpOutcall(request, response) * count) as Cycles;
+  const usd = (calcUSD.httpOutcall(request, response) * count) as USD;
+  const cycles = (calcCycles.httpOutcall(request, response) * count) as Cycles;
   return { usd, cycles };
 }

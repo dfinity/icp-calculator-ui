@@ -23,7 +23,7 @@ export const spreadArray = <T>(
   fillFunction: FillFunction<T> = lerp as unknown as FillFunction<T>,
 ): T[] => {
   // Check that the valuesToFill array is not empty and that the target size is valid
-  if (!valuesToFill || valuesToFill.length < 2) {
+  if (valuesToFill.length < 2) {
     throw new Error("valuesToFill array must have at least two values.");
   }
   if (targetSize < valuesToFill.length) {

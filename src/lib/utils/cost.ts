@@ -44,7 +44,7 @@ export class Cost {
   }
 
   public addIfSameKind(other: Cost): boolean {
-    if (this.kind == other.kind) {
+    if (this.kind === other.kind) {
       this.amount.usd = (this.amount.usd + other.amount.usd) as USD;
       this.amount.cycles = (this.amount.cycles + other.amount.cycles) as Cycles;
       return true;
@@ -53,7 +53,7 @@ export class Cost {
   }
 
   public addIfSameCategoryAndKind(other: Cost): boolean {
-    if (this.category == other.category) {
+    if (this.category === other.category) {
       return this.addIfSameKind(other);
     }
     return false;
@@ -97,10 +97,10 @@ export class Cost {
   }
 }
 
-type TotalCost = {
+interface TotalCost {
   oneTime: Cost;
   perDay: Cost;
-};
+}
 
 export class Breakdown {
   items: Cost[];
@@ -109,8 +109,8 @@ export class Breakdown {
     this.items = [];
   }
 
-  public add(cost: Cost) {
-    for (let item of this.items) {
+  public add(cost: Cost): void {
+    for (const item of this.items) {
       if (item.addIfSameCategoryAndKind(cost)) {
         return;
       }
@@ -118,15 +118,15 @@ export class Breakdown {
     this.items.push(cost);
   }
 
-  public merge(other: Breakdown) {
+  public merge(other: Breakdown): void {
     for (const item of other.items) {
       this.add(item);
     }
   }
 
-  public sort() {
+  public sort(): void {
     this.items.sort((a, b) => {
-      if (a.category != b.category) {
+      if (a.category !== b.category) {
         return a.category.valueOf() - b.category.valueOf();
       }
       return a.kind.valueOf() - b.kind.valueOf();
@@ -138,12 +138,12 @@ export class Breakdown {
   }
 
   public total(): TotalCost {
-    let oneTime = new Cost(Kind.OneTime, Category.Total, Amount.zero());
+    const oneTime = new Cost(Kind.OneTime, Category.Total, Amount.zero());
     for (const item of this.items) {
       oneTime.addIfSameKind(item);
     }
 
-    let perDay = new Cost(Kind.PerDay, Category.Total, Amount.zero());
+    const perDay = new Cost(Kind.PerDay, Category.Total, Amount.zero());
     for (const item of this.items) {
       perDay.addIfSameKind(item);
     }

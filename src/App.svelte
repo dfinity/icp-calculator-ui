@@ -123,7 +123,7 @@
 </script>
 
 <main>
-  <h1>ICP Pricing Calculator</h1>
+  <h1>ICP Pricing Calculator<sup>(beta)</sup></h1>
 
   <aside class="l-stack">
     <form class="l-stack">

@@ -4,12 +4,24 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "format": "prettier . --write",
+    "format:check": "prettier --check .",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
+    "lint": "eslint --max-warnings 0 \"src/**/*\"",
     "check": "svelte-check --tsconfig ./tsconfig.json && tsc -p tsconfig.node.json"
   },
   "devDependencies": {
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-config-standard-with-typescript": "^43.0.1",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-n": "^16.6.2",
+    "eslint-plugin-prettier": "^5.1.3",
+    "eslint-plugin-promise": "^6.1.1",
+    "prettier": "^3.2.5",
+    "prettier-plugin-organize-imports": "^3.2.4",
     "@sveltejs/vite-plugin-svelte": "^3.1.1",
     "@tsconfig/svelte": "^5.0.4",
     "svelte": "^4.2.18",
@@ -17,5 +29,8 @@
     "tslib": "^2.6.3",
     "typescript": "^5.5.3",
     "vite": "^5.4.0"
+  },
+  "dependencies": {
+    "@dfinity/icp-calculator": "^0.0.1"
   }
 }

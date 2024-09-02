@@ -1,128 +1,131 @@
 <script lang="ts">
-  // types
-  type PieChartData = {
-    label: string
-    value: number
-    unit: string
-    color?: string
-  }
-
-  type CartItem = {
-    label: string
-    info?: string
-    fields?: { label: string, input: any }[]
-  }
-
   // utilities
-  import { spreadArray } from './lib/utils/spreadArray';
+  import { spreadArray } from "./lib/utils/spreadArray";
 
   // components
-  import PieChart from './lib/PieChart.svelte'
-  import PieChartLegend from './lib/PieChartLegend.svelte';
-  import Card from './lib/Card.svelte'
-  import Number from './lib/Number.svelte';
+  import PieChart from "./lib/PieChart.svelte";
+  import PieChartLegend from "./lib/PieChartLegend.svelte";
+  import Card from "./lib/Card.svelte";
+  import Number from "./lib/Number.svelte";
 
   // icons
-  import PagesLine from './lib/icons/pages-line.svg.svelte';
-  import GroupLine from './lib/icons/group-line.svg.svelte';
-  import CoinsLine from './lib/icons/coins-line.svg.svelte';
-  import PencilLine from './lib/icons/pencil-line.svg.svelte';
-  
+  import PagesLine from "./lib/icons/pages-line.svg.svelte";
+  import GroupLine from "./lib/icons/group-line.svg.svelte";
+  import CoinsLine from "./lib/icons/coins-line.svg.svelte";
+  import PencilLine from "./lib/icons/pencil-line.svg.svelte";
+  import {
+    Canister,
+    Storage,
+    features,
+    type Feature,
+  } from "./lib/utils/feature";
+  import { Breakdown, Kind } from "./lib/utils/cost";
+  import type { USD } from "@dfinity/icp-calculator";
+  import {
+    decentralizedExchange,
+    landingPage,
+    socialNetwork,
+  } from "./lib/utils/preset";
+
+  // types
+  type PieChartData = {
+    label: string;
+    kind: Kind;
+    value: USD;
+    unit: "$";
+    color: string;
+  };
+
   // the design contains 3 colors
   const colorStops = [
-    'var(--cr-data-1)', 'var(--cr-data-2)', 'var(--cr-data-3)'
+    "var(--cr-data-1)",
+    "var(--cr-data-2)",
+    "var(--cr-data-3)",
   ];
 
-  const cartItems:CartItem[] = [ // you probably want to add a key called fields and some kind of function to calculate the cost
-    { label: 'Canister', },
-    { label: 'Storage', },
-    { 
-      label: 'Query Message', 
-      info: 'Explore coding, from beginner to pro, with our comprehensive guides, tutorials, samples, and API docs for Rust, Motoko, and TypeScript',
-      fields: [ /*... fields */],
-      calc: () => 0,
-
-
-    },
-    { label: 'Update Message', },
-    { label: 'Inter-Canister Call', },
-    { label: 'Timer', },
-    { label: 'Something Else',  },
-  ];
-
-
-
-
-  const vizData:PieChartData[] = [
-    { value: 33.123, label: 'Storage', unit: '$' },
-    { value: 12.13, label: 'Canister', unit: '$' },
-    { value: 2.23, label: 'Query Message', unit: '$' },
-    { value: 1.2, label: 'Update Message', unit: '$' },
-    { value: 4.23, label: 'Inter-Canister Call', unit: '$' },
-    { value: 5.23, label: 'Timer', unit: '$' },
-    { value: 12.23, label: 'Something Else', unit: '$' },
-  ];
+  let vizData: PieChartData[] = [];
+  let vizDays = 365;
+  let total = {
+    unit: "$",
+    days: vizDays,
+    oneTime: 0,
+    recurrent: 0,
+  };
 
   $: {
+    let costs = userFeatures.map((feature) => feature.cost());
+    let breakdown = new Breakdown();
+    for (const x of costs) {
+      breakdown.merge(x);
+    }
+    breakdown.sort();
+
+    total.days = vizDays;
+    total.oneTime = breakdown.total().oneTime.amount.usd;
+    total.recurrent = breakdown.total().perDay.amount.usd * vizDays;
+
+    vizData = breakdown.costs().map((x) => {
+      return {
+        label: x.label(),
+        kind: x.kind,
+        value: x.cost(vizDays).usd,
+        unit: "$",
+        color: "",
+      };
+    });
+
+    // but we have X possible categories so lets interpolate the colors, since
+    // CSS supports color mixing we don't need any color lib to do so
+    const colorsForCategories = spreadArray(
+      colorStops,
+      vizData.length,
+      (percent, currentValue, nextValue) =>
+        `color-mix(in okLab, ${currentValue} ${(1 - percent) * 100}%, ${nextValue})`,
+    );
     // update vizData here
+    vizData.forEach((data, index) => {
+      data.color = colorsForCategories[index];
+    });
   }
 
-  let userCart = [
-    { 
-      label: 'Canister',
-      fields: [
-        {
-          label: 'Canister',
-          input: {
-            type: 'increment',
-            value: 1,
-          }
-        },
-        {
-          label: 'Size',
-          input: {
-            list: ['1 Mb', '10 Mb', '100 Mb', '1 Gb', '10 Gb', '100 Gb'],
-          }
-        }
-      ]
-    },
-  ];
+  export let userFeatures: Feature[] = [];
 
-  function removeUserCartByIndex(index: number) {
-    userCart = userCart.filter((_, i) => i !== index);
+  function removeUserFeature(id: number) {
+    userFeatures = userFeatures.filter((f) => f.id != id);
   }
 
-  // but we have X possible categories so lets interpolate the colors, since 
-  // CSS supports color mixing we don't need any color lib to do so
-  const colorsForCategories = spreadArray(
-    colorStops, 
-    vizData.length,
-    (percent, currentValue, nextValue) => `color-mix(in okLab, ${currentValue} ${(1 - percent) * 100}%, ${nextValue})`
-  );
-
-  vizData.forEach((data, index) => {
-    data.color = colorsForCategories[index];
-  });
-  let cartVisible = false;
-
-  function toggleCart() {
-    cartVisible = !cartVisible;
+  function addUserFeature(feature: Feature) {
+    userFeatures.unshift(feature);
+    userFeatures = userFeatures;
   }
 
-  function togglePreset(label) {
-    console.log('togglePreset', label);
-  }
+  let presets = {
+    landing: landingPage(),
 
-  function addItemBlock(label) {
-    console.log('addItemBlock', label);
+    social: socialNetwork(1000),
+
+    dex: decentralizedExchange(1000),
+
+    custom: [] as Feature[],
+  };
+
+  let selectedPreset = "landing";
+
+  togglePreset("landing");
+
+  function togglePreset(label: "landing" | "social" | "dex" | "custom") {
+    if (selectedPreset == "custom") {
+      presets.custom = [...userFeatures];
+    }
+    userFeatures = [...presets[label]];
+    selectedPreset = label;
   }
 </script>
 
 <main>
-  <h1>Pricing Calculator</h1>
+  <h1>ICP Pricing Calculator</h1>
 
   <aside class="l-stack">
-    <h1 class="t-discrete">Presets</h1>
     <form class="l-stack">
       <ul class="l-horizontal">
         <li class="l-1/4 l-1/2@mobile stretch-vertical">
@@ -130,9 +133,15 @@
             <span class="icon">
               <PagesLine />
             </span>
-            <input type="radio" name="preset" value="1" checked on:change={() => togglePreset('landing')} />
+            <input
+              type="radio"
+              name="preset"
+              value="1"
+              checked={selectedPreset == "landing"}
+              on:change={() => togglePreset("landing")}
+            />
             <strong class="h2">Landing Page</strong>
-             <span class="t-discrete">&nbsp;</span>
+            <span class="t-discrete">&nbsp;</span>
           </Card>
         </li>
         <li class="l-1/4 l-1/2@mobile stretch-vertical">
@@ -140,9 +149,15 @@
             <span class="icon">
               <GroupLine />
             </span>
-            <input type="radio" name="preset" value="2"  on:change={() => togglePreset('social')} />
+            <input
+              type="radio"
+              name="preset"
+              value="2"
+              checked={selectedPreset == "social"}
+              on:change={() => togglePreset("social")}
+            />
             <strong class="h2">Social network</strong>
-            <span class="t-discrete">1000 users</span>
+            <span class="t-discrete">1000 active users</span>
           </Card>
         </li>
         <li class="l-1/4 l-1/2@mobile stretch-vertical">
@@ -150,9 +165,15 @@
             <span class="icon">
               <CoinsLine />
             </span>
-            <input type="radio" name="preset" value="3"  on:change={() => togglePreset('exchange')} />
-            <strong class="h2">Decentralized exchange</strong>
-            <span class="t-discrete">100 token pairs & 1000 users</span>
+            <input
+              type="radio"
+              name="preset"
+              value="3"
+              checked={selectedPreset == "dex"}
+              on:change={() => togglePreset("dex")}
+            />
+            <strong class="h2">DEX</strong>
+            <span class="t-discrete">1000 trades per day</span>
           </Card>
         </li>
         <li class="l-1/4 l-1/2@mobile stretch-vertical">
@@ -160,9 +181,15 @@
             <span class="icon">
               <PencilLine />
             </span>
-            <input type="radio" name="preset" value="4"  on:change={() => togglePreset('custom')} />
-            <strong class="h2">Custom presets</strong>
-             <span class="t-discrete">&nbsp;</span>
+            <input
+              type="radio"
+              name="preset"
+              value="4"
+              checked={selectedPreset == "custom"}
+              on:change={() => togglePreset("custom")}
+            />
+            <strong class="h2">Custom</strong>
+            <span class="t-discrete">&nbsp;</span>
           </Card>
         </li>
       </ul>
@@ -172,157 +199,104 @@
   <main class="l-horizontal l-stack l-stack--large">
     <!-- left sidebar -->
     <div class="l-1/2 l-1/1@mobile">
-      <Card tag="section" class="cart {cartVisible ? 'cart--visible' : 'cart--hidden'}">
-        <div class="cart__summary">
-          <article>
-            <div class="t-center">
-              <h1 class="t-discrete">Total cost for period</h1>
-              <h2 class="h2">$405.14</h2>
-            </div>
-          </article>
-
-          <div class="l-horizontal l-horizontal--center l-stack l-stack--large">
-            <strong class="l-grow">Days</strong>
-            <div class="l-1/2 l-shrink">
-              <Number type="increment" min={1} max={31} value={1} />
-            </div>
-          </div>
-
-          <hr class="l-stack l-stack--large" />
-          <div class="l-horizontal l-horizontal--center l-stack l-stack--large">
-            <div class="l-grow">
-              <PieChart data={vizData} />
-            </div>
-            <div class="l-2/3">
-              <PieChartLegend data={vizData} />
-            </div>
-          </div>
-          <button class="button button--primary button--full l-stack  l-stack--large" on:click={toggleCart}>Add Items</button>
-        </div>
-
-        <aside class="cart__items">
-          <h2 class="t-discrete">Add Items</h2>
-          <ul class="l-stack">
-            {#each cartItems as item}
-              <li class="cart__item">
-                <Card hasOutline={true} isTight={true}>
-                  <div class="cart__entry">
-                    <svelte:element this={item.info ? 'details' : 'div'} class="cart__label">
-                      {#if item.info}
-                        <summary class="h3"><strong class="h3">{item.label}</strong></summary>
-                        <p class="t-discrete l-stack">{item.info}</p>
-                      {:else}
-                        <strong class="h3">{item.label}</strong>
-                      {/if}
-                    </svelte:element>
-                    <button class="button button--outlined cart__button" aria-label="add to cart">+</button>
-                  </div>
-                </Card>
-              </li>
-            {/each}
-          </ul>
-          <button class="button button--secondary button--full l-stack l-stack--large" on:click={() => cartVisible = !cartVisible}>Close</button>
-        </aside>
-      
-      </Card>
-    </div>
-
-
-    <!-- right cart content -->
-    <section class="l-1/2 l-1/1@mobile l-vertical l-horizontal--center" aria-label="Cart Contents">
-      {#each userCart as { label, fields }, i}
-        <Card tag="aside" aria-label={label}>
-          {#each fields as { label, input }, j}
-            <div class="l-horizontal l-stack">
-              <strong class="l-grow">{label}</strong>
-              <div class="l-1/2 l-shrink">
-                <Number {...input} />
-              </div>
-            </div>
-
-          {/each}
-
-          <button class="l-stack button button--text button--danger button--right" on:click={() => removeUserCartByIndex(i)}>Remove</button>
-        </Card>
-      {/each}
-
-
-      <Card tag="aside" aria-label="Storage">
+      <Card tag="section" class="card">
         <div class="l-horizontal l-horizontal--center">
-          <strong class="l-grow">Query message</strong>
+          <strong class="l-grow">Days</strong>
           <div class="l-1/2 l-shrink">
-            <Number value={1000} type="increment" min={0} max={10000} />
-          </div>
-        </div>
-        <div class="l-horizontal l-horizontal--center l-stack ">
-          <span class="l-grow">Compute</span>
-          <div class="l-1/2 l-shrink">
-            <Number type="range" min={0} max={100} value={50} unit={'Mb'}/>
-          </div>
-        </div>
-
-        <div class="l-horizontal l-horizontal--center l-stack">
-          <span class="l-grow">Network bytes</span>
-          <div class="l-1/2 l-shrink">
-            <Number type="range" min={0} max={10000} value={500} unit={'Kb'}/>
-          </div>
-        </div>
-
-        <div class="l-horizontal l-horizontal--center l-stack">
-          <span class="l-grow">Repeat</span>
-          <div class="l-1/2 l-shrink">
-            <Number type="range" min={1} max={10} value={1} unit={'Day'} unitmultiple={'Days'} />
-          </div>
-        </div>
-
-        <div class="l-horizontal l-horizontal--center l-stack">
-          <span class="l-grow">Predefined List</span>
-          <div class="l-1/2 l-shrink">
-            <Number list={
-              ['1 Day', '5 Days', '1 Week', '2 Weeks', '1 Month', '4 Months', '1 Year', '1 Decade']} 
+            <Number
+              type="increment"
+              value={vizDays}
+              onChange={(value) => (vizDays = value)}
             />
           </div>
         </div>
-
-        <button class="l-stack button button--text button--danger button--right">Remove</button>
+        <hr class="l-stack l-stack--large" />
+        <div class="cart__summary">
+          <div class="l-horizontal l-stack l-stack--large">
+            {#if vizData.length > 0}
+              <div class="l-grow">
+                <PieChart data={vizData} />
+              </div>
+              <div class="l-2/3">
+                <PieChartLegend data={vizData} {total} />
+              </div>
+            {:else}
+              <div class="l-grow">
+                Nothing to compute. <br />
+                Add more features using the <strong>+Feature</strong> buttons.
+              </div>
+            {/if}
+          </div>
+        </div>
       </Card>
+    </div>
+
+    <!-- right cart content -->
+    <section class="l-1/2 l-1/1@mobile" aria-label="Cart Contents">
+      <div class="feature-container l-vertical l-horizontal--center">
+        <div class="toolbar">
+          {#each features as feature}
+            <button
+              class="button button--primary"
+              aria-label="add to cart"
+              on:click={() => addUserFeature(feature.build())}
+              >+{feature.label}</button
+            >
+          {/each}
+        </div>
+        {#if userFeatures.length > 0}
+          <hr class="l-stack" />
+        {/if}
+        {#each userFeatures as feature (feature.id)}
+          <Card class="card" tag="aside" aria-label={`feature-${feature.id}`}>
+            {#each feature.fields() as f, i}
+              <div class="l-horizontal l-stack">
+                {#if i == 0}
+                  <strong class="l-grow">{f.label}</strong>
+                {:else}
+                  <span class="l-grow">{f.label}</span>
+                {/if}
+                <div class="l-1/2 l-shrink">
+                  <Number
+                    type={f.type}
+                    list={f.values}
+                    onChange={(value) => {
+                      f.onChange(value);
+                      vizData = [];
+                    }}
+                    value={f.default}
+                  />
+                </div>
+              </div>
+            {/each}
+            <button
+              class="l-stack button button--text button--danger button--right"
+              on:click={() => removeUserFeature(feature.id)}
+              >Remove
+            </button>
+          </Card>
+        {/each}
+      </div>
     </section>
   </main>
- 
 </main>
 
-
 <style>
-  .cart__item + .cart__item {
-    margin-top: calc(var(--sr-card-gutter) * .5);
-  }
-
-  .cart__entry {
+  .toolbar {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
+    gap: 1ex;
   }
 
-  .cart__label {
-    flex-grow: 1;
-  }
-
-  .cart__button {
-    align-self: flex-start;
-  }
-
-  :global(.cart--hidden) .cart__items {
-    display: none;
-  }
-
-  :global(.cart--hidden) .cart__summary {
+  .cart__summary {
     display: block;
   }
 
-  :global(.cart--visible) .cart__items {
-    display: block;
-  }
-
-  :global(.cart--visible) .cart__summary {
-    display: none;
+  .feature-container {
+    padding: 2ex;
+    border: solid 1px;
+    border-color: var(--cr-card-border);
+    border-radius: var(--sr-card-radius);
   }
 </style>

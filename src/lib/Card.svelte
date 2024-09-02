@@ -1,20 +1,22 @@
 <script lang="ts">
   import CheckLine from "./icons/check-line.svg.svelte";
-  export let tag = 'div';
+  export let tag = "div";
   export let selectable = false;
   export let hasOutline = false;
   export let isTight = false;
 
   // add card class to restProps
-  $$restProps.class = `card ${$$restProps.class || ''}`;
-  if (selectable) {
-    $$restProps.class += ' card--selectable';
-  }
-  if (hasOutline) {
-    $$restProps.class += ' card--outline';
-  }
-  if (isTight) {
-    $$restProps.class += ' card--tight';
+  $: {
+    $$restProps.class = `card ${$$restProps.class || ""}`;
+    if (selectable) {
+      $$restProps.class += " card--selectable";
+    }
+    if (hasOutline) {
+      $$restProps.class += " card--outline";
+    }
+    if (isTight) {
+      $$restProps.class += " card--tight";
+    }
   }
 </script>
 
@@ -27,7 +29,6 @@
   <slot></slot>
 </svelte:element>
 
-
 <style>
   .card {
     --c-border: var(--cr-card-border);
@@ -39,8 +40,8 @@
   }
 
   .card--tight {
-    padding: calc(var(--sr-card-gutter) * .25);
-    padding-left: calc(var(--sr-card-gutter) * .75);
+    padding: calc(var(--sr-card-gutter) * 0.25);
+    padding-left: calc(var(--sr-card-gutter) * 0.75);
   }
 
   .card--outline {
@@ -59,7 +60,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: .2em;
+    gap: 0.2em;
   }
 
   .card--selectable:has(input:checked) {
@@ -87,7 +88,9 @@
     color: var(--cr-card);
     opacity: 0;
     transform: scale(0.2);
-    transition: opacity 0.2s, transform 0.2s;
+    transition:
+      opacity 0.2s,
+      transform 0.2s;
   }
 
   .card--selectable:has(input:checked) .card__status-icon {
@@ -104,7 +107,9 @@
     left: 50%;
     transform: translate(-50%, -50%) scale(0.2);
     opacity: 0;
-    transition: opacity 0.2s, transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition:
+      opacity 0.2s,
+      transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
 
   .card--selectable:has(input:checked) .card__status-icon :global(svg) {

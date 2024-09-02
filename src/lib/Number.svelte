@@ -1,13 +1,14 @@
 <script lang="ts">
   export let count: number = 0;
-  export let type: 'increment'|'range' = 'increment';
-  export let min: number = 0;
-  export let max: number = Infinity;
+  export let type: "increment" | "range" = "increment";
+  export let min: number = 1;
+  export let max: number = 1000000000;
   export let step: number = 1;
   export let value: number = 0;
-  export let unit: string = '';
-  export let unitmultiple: string|null = null;
+  export let unit: string = "";
+  export let unitmultiple: string | null = null;
   export let list: string[] = [];
+  export let onChange: (selected: number) => void = (_selected) => {};
 
   let renderUnit = unit;
 
@@ -18,7 +19,7 @@
   if (list.length) {
     min = 0;
     max = list.length - 1;
-    type = 'range';
+    type = "range";
     unitmultiple = null;
   }
 
@@ -31,19 +32,22 @@
     value = Math.min(value, max);
     value = Math.max(value, min);
     return value;
-  }
+  };
 
   const increment = () => {
     count = sanitize(count + 1);
-  }
+    onChange(count);
+  };
   const decrement = () => {
     count = sanitize(count - 1);
-  }
+    onChange(count);
+  };
 
   const handleInput = (event: Event) => {
     const target = event.target as HTMLInputElement;
     count = sanitize(parseInt(target.value));
-  }
+    onChange(count);
+  };
 
   $: count = value;
 
@@ -55,10 +59,10 @@
     }
   }
 
-  let renderedValue:string|number = count;
-  
+  let renderedValue: string | number = count;
+
   $: {
-    if (list.length) {
+    if (list && list.length) {
       renderedValue = list[count];
     } else {
       renderedValue = count;
@@ -66,18 +70,29 @@
   }
 </script>
 
-<div class={`input-group input-group--${type}`} style={`--value: ${(count-1)/(max-1)}`}>
-  {#if type === 'increment'}
+<div
+  class={`input-group input-group--${type}`}
+  style={`--value: ${count / max}`}
+>
+  {#if type === "increment"}
     <button class="button" on:click={decrement} aria-label="decrement">
       -
     </button>
-    <input class="input-group__input" type="text" bind:value={count} on:input={handleInput} on:blur={handleInput} pattern="[0-9]" required />
+    <input
+      class="input-group__input"
+      type="text"
+      bind:value={count}
+      on:input={handleInput}
+      on:blur={handleInput}
+      pattern="[0-9]"
+      required
+    />
     <button class="button" on:click={increment} aria-label="increment">
       +
     </button>
   {/if}
 
-  {#if type === 'range'}
+  {#if type === "range"}
     <div class="input-group__valueunit">
       <span class="input-group__value">{renderedValue}</span>
       {#if unit}
@@ -85,11 +100,17 @@
       {/if}
     </div>
     <div class="input-group__wrap">
-      <input step={step} type="range" min={min} max={max} bind:value={count} on:input={handleInput} />
+      <input
+        {step}
+        type="range"
+        {min}
+        {max}
+        bind:value={count}
+        on:input={handleInput}
+      />
     </div>
   {/if}
 </div>
-
 
 <style>
   .input-group {
@@ -114,7 +135,7 @@
 
   .input-group__wrap {
     position: absolute;
-    top: 0; 
+    top: 0;
     bottom: 0;
     left: calc(var(--sr-button-gutter-x) / 4);
     right: calc(var(--sr-button-gutter-x) / 4);
@@ -148,14 +169,16 @@
   }
 
   .input-group--range::before {
-    content: '';
+    content: "";
     position: absolute;
     height: 1px;
-    left: calc(var(--sr-button-gutter-x) / 3); 
+    left: calc(var(--sr-button-gutter-x) / 3);
     right: calc(var(--sr-button-gutter-x) / 3);
-    background: linear-gradient(to right, var(--cr-interaction) 0% calc(var(--value, 0) * 100%), rgba(0 0 0 / 20%) calc(var(--value, 0) * 100%) 100%);
+    background: linear-gradient(
+      to right,
+      var(--cr-interaction) 0% calc(var(--value, 0) * 100%),
+      rgba(0 0 0 / 20%) calc(var(--value, 0) * 100%) 100%
+    );
     bottom: 0;
   }
 </style>
-
-

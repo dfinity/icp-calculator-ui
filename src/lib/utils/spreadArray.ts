@@ -27,9 +27,7 @@ export const spreadArray = <T>(
     throw new Error("valuesToFill array must have at least two values.");
   }
   if (targetSize < valuesToFill.length) {
-    throw new Error(
-      "Target size must be greater than or equal to the valuesToFill array length."
-    );
+    return valuesToFill.slice(0, targetSize);
   }
   // Create a copy of the valuesToFill array and add null values to it if necessary
   const valuesToAdd = targetSize - valuesToFill.length;

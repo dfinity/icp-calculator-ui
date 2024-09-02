@@ -35,6 +35,7 @@
 }
 
 body {
+  max-width: 1000px;
   line-height: 1.4;
   -webkit-font-smoothing: antialiased;
 }
@@ -65,19 +66,22 @@ h6 {
   overflow-wrap: break-word;
 }
 
-h1, .h1 {
+h1,
+.h1 {
   font-size: 3.2rem;
   font-weight: 600;
   line-height: 1.2;
 }
 
-h2, .h2 {
+h2,
+.h2 {
   font-size: 1.5;
   font-weight: 600;
   line-height: 1.1;
 }
 
-ul, ol {
+ul,
+ol {
   padding: 0;
   margin: 0;
   list-style: none;
@@ -102,7 +106,7 @@ li {
   --cv-purple: hsl(calc(var(--c-baseHue) * 0.96) 38% 45%);
   --cv-pink: hsl(calc(var(--c-baseHue) * 1.25) 80% 54%);
   --cv-yellow: hsl(calc(var(--c-baseHue) * 0.13) 95% 59%);
-  
+
   /* design tokens (reference tokens) */
   --cr-data-1: var(--cv-purple);
   --cr-data-2: var(--cv-pink);
@@ -134,7 +138,8 @@ li {
   --cr-card-border: var(--cv-neutral-50);
   --cr-card-border--selected: var(--cv-purple);
 
-  --sv-base: max(62.5%, calc(0.6vh + 0.25rem)); /* 10px equivalent */
+  --sv-base: max(62.5%, calc(0.6vh + 0.25rem));
+  /* 10px equivalent */
 
   --sr-font-base: 1.6rem;
   --sr-font-small: 1.4rem;
@@ -144,7 +149,7 @@ li {
   --sr-font-default: var(--sv-base);
   --sr-card-gutter: 1.6rem;
   --sr-page-gutter: calc(var(--sr-card-gutter) * 2);
-  --sr-button-gutter-x: 2.4rem;
+  --sr-button-gutter-x: 1.4rem;
   --sr-button-gutter-y: 0.6rem;
   --sr-grid-gutter: 0.8rem;
   --sr-input-gutter: calc(var(--sr-grid-gutter) * .5);
@@ -153,7 +158,8 @@ li {
 
   /* base design */
   font-family: "Circular", system-ui, sans-serif;
-  font-size: 62.5%; /* 10px */
+  font-size: 62.5%;
+  /* 10px */
   font-size: var(--sv-base);
   line-height: 1.5;
   font-weight: 350;
@@ -178,17 +184,17 @@ body {
   padding: var(--sr-page-gutter);
 }
 
-details > summary {
+details>summary {
   list-style: none;
   cursor: pointer;
 }
 
-details > summary::marker,
-details > summary::-webkit-details-marker {
+details>summary::marker,
+details>summary::-webkit-details-marker {
   display: none;
 }
 
-details > summary::after {
+details>summary::after {
   content: '';
   display: inline-block;
   background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iY3VycmVudENvbG9yIj48cGF0aCBkPSJNMTIgMjJDNi40NzcxNSAyMiAyIDE3LjUyMjggMiAxMkMyIDYuNDc3MTUgNi40NzcxNSAyIDEyIDJDMTcuNTIyOCAyIDIyIDYuNDc3MTUgMjIgMTJDMjIgMTcuNTIyOCAxNy41MjI4IDIyIDEyIDIyWk0xMiAyMEMxNi40MTgzIDIwIDIwIDE2LjQxODMgMjAgMTJDMjAgNy41ODE3MiAxNi40MTgzIDQgMTIgNEM3LjU4MTcyIDQgNCA3LjU4MTcyIDQgMTJDNCAxNi40MTgzIDcuNTgxNzIgMjAgMTIgMjBaTTExIDE1SDEzVjE3SDExVjE1Wk0xMyAxMy4zNTUxVjE0SDExVjEyLjVDMTEgMTEuOTQ3NyAxMS40NDc3IDExLjUgMTIgMTEuNUMxMi44Mjg0IDExLjUgMTMuNSAxMC44Mjg0IDEzLjUgMTBDMTMuNSA5LjE3MTU3IDEyLjgyODQgOC41IDEyIDguNUMxMS4yNzIzIDguNSAxMC42NjU2IDkuMDE4MjMgMTAuNTI4OCA5LjcwNTc3TDguNTY3MzEgOS4zMTM0NkM4Ljg4NjM3IDcuNzA5MTkgMTAuMzAyIDYuNSAxMiA2LjVDMTMuOTMzIDYuNSAxNS41IDguMDY3IDE1LjUgMTBDMTUuNSAxMS41ODU1IDE0LjQ0NTcgMTIuOTI0OCAxMyAxMy4zNTUxWiI+PC9wYXRoPjwvc3ZnPg==");
@@ -215,7 +221,8 @@ hr {
   line-height: 1.2;
 }
 
-.button, button {
+.button,
+button {
   position: relative;
   font-size: var(--sr-font-base);
   font-weight: normal;
@@ -255,7 +262,8 @@ hr {
   margin-left: auto;
 }
 
-button::before, .button::before {
+button::before,
+.button::before {
   position: absolute;
   content: "";
   top: 100%;
@@ -269,7 +277,7 @@ button::before, .button::before {
 
   transition: transform .8s cubic-bezier(0.3, .7, 0, 1), filter 0.2s linear;
   pointer-events: none;
-} 
+}
 
 button:hover::before,
 .button:hover::before {
@@ -278,9 +286,9 @@ button:hover::before,
 }
 
 .button--primary {
+  font-size: var(--sr-font-small);
   background-color: var(--cr-button--primary);
   color: var(--cr-onButton--primary);
-
 }
 
 .icon {
@@ -356,7 +364,7 @@ input[type="range"]::-webkit-slider-thumb {
   background-color: var(--cr-background);
   height: var(--size);
   width: var(--size);
-  box-shadow: inset 0 0 0 calc(calc(var(--size) - var(--size-dot)) / 2) var(--cr-interaction); 
+  box-shadow: inset 0 0 0 calc(calc(var(--size) - var(--size-dot)) / 2) var(--cr-interaction);
   border-radius: 50%;
 
   margin-top: calc(var(--size-track) / 2 - var(--size) / 2);
@@ -412,7 +420,7 @@ input[type="range"]:focus::-moz-range-thumb {
   gap: var(--sr-grid-gutter);
 }
 
-.l-horizontal > [class*="l-"] {
+.l-horizontal>[class*="l-"] {
   margin-right: var(--sr-grid-gutter);
   margin-bottom: var(--sr-grid-gutter);
 }
@@ -477,6 +485,6 @@ input[type="range"]:focus::-moz-range-thumb {
   align-items: stretch;
 }
 
-.stretch-vertical > * {
+.stretch-vertical>* {
   flex: 1;
 }

@@ -20,7 +20,7 @@ import type { FillFunction } from "./lerp";
 export const spreadArray = <T>(
   valuesToFill: T[],
   targetSize: number,
-  fillFunction: FillFunction<T> = lerp as unknown as FillFunction<T>
+  fillFunction: FillFunction<T> = lerp as unknown as FillFunction<T>,
 ): T[] => {
   // Check that the valuesToFill array is not empty and that the target size is valid
   if (!valuesToFill || valuesToFill.length < 2) {
@@ -35,7 +35,7 @@ export const spreadArray = <T>(
 
   for (let i = 0; i < valuesToAdd; i++) {
     (chunkArray[i % (valuesToFill.length - 1)] as T[]).push(
-      null as unknown as T
+      null as unknown as T,
     );
   }
 

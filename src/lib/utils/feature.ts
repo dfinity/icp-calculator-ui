@@ -180,6 +180,13 @@ export class Ingress implements Feature {
         onChange: (value) => (this.count = value),
       },
       {
+        label: "Frequency",
+        type: "range",
+        values: this.repeat_values.map(repeatToString),
+        default: this.repeat_index,
+        onChange: (value) => (this.repeat_index = value),
+      },
+      {
         label: "Instructions",
         type: "range",
         values: this.instruction_values.map(countToString),
@@ -199,13 +206,6 @@ export class Ingress implements Feature {
         values: this.response_values.map(bytesToString),
         default: this.response_index,
         onChange: (value) => (this.response_index = value),
-      },
-      {
-        label: "Repeat",
-        type: "range",
-        values: this.repeat_values.map(repeatToString),
-        default: this.repeat_index,
-        onChange: (value) => (this.repeat_index = value),
       },
     ];
   }
@@ -276,6 +276,13 @@ export class Call implements Feature {
         onChange: (value) => (this.count = value),
       },
       {
+        label: "Frequency",
+        type: "range",
+        values: this.repeat_values.map(repeatToString),
+        default: this.repeat_index,
+        onChange: (value) => (this.repeat_index = value),
+      },
+      {
         label: "Instructions",
         type: "range",
         values: this.instruction_values.map(countToString),
@@ -295,13 +302,6 @@ export class Call implements Feature {
         values: this.response_values.map(bytesToString),
         default: this.response_index,
         onChange: (value) => (this.response_index = value),
-      },
-      {
-        label: "Repeat",
-        type: "range",
-        values: this.repeat_values.map(repeatToString),
-        default: this.repeat_index,
-        onChange: (value) => (this.repeat_index = value),
       },
     ];
   }
@@ -362,18 +362,18 @@ export class Timer implements Feature {
         onChange: (value) => (this.count = value),
       },
       {
+        label: "Frequency",
+        type: "range",
+        values: this.repeat_values.map(repeatToString),
+        default: this.repeat_index,
+        onChange: (value) => (this.repeat_index = value),
+      },
+      {
         label: "Instructions",
         type: "range",
         values: this.instruction_values.map(countToString),
         default: this.instruction_index,
         onChange: (value) => (this.instruction_index = value),
-      },
-      {
-        label: "Repeat",
-        type: "range",
-        values: this.repeat_values.map(repeatToString),
-        default: this.repeat_index,
-        onChange: (value) => (this.repeat_index = value),
       },
     ];
   }
@@ -478,6 +478,13 @@ export class HttpOutcall implements Feature {
         onChange: (value) => (this.count = value),
       },
       {
+        label: "Frequency",
+        type: "range",
+        values: this.repeat_values.map(repeatToString),
+        default: this.repeat_index,
+        onChange: (value) => (this.repeat_index = value),
+      },
+      {
         label: "Request bytes",
         type: "range",
         values: this.request_values.map(bytesToString),
@@ -490,13 +497,6 @@ export class HttpOutcall implements Feature {
         values: this.response_values.map(bytesToString),
         default: this.response_index,
         onChange: (value) => (this.response_index = value),
-      },
-      {
-        label: "Repeat",
-        type: "range",
-        values: this.repeat_values.map(repeatToString),
-        default: this.repeat_index,
-        onChange: (value) => (this.repeat_index = value),
       },
     ];
   }

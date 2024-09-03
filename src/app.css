@@ -237,6 +237,7 @@ button {
   border-radius: var(--sr-button-radius);
   border: none;
   overflow: clip;
+  touch-action: manipulation;
 }
 
 .button--secondary {

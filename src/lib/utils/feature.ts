@@ -167,7 +167,7 @@ export class Ingress implements Feature {
     this.request_values = networkValues();
     this.response_index = 4;
     this.response_values = networkValues();
-    this.repeat_index = 4;
+    this.repeat_index = 3;
     this.repeat_values = repeatValues();
   }
 
@@ -263,7 +263,7 @@ export class Call implements Feature {
     this.request_values = networkValues();
     this.response_index = 4;
     this.response_values = networkValues();
-    this.repeat_index = 4;
+    this.repeat_index = 3;
     this.repeat_values = repeatValues();
   }
 
@@ -349,7 +349,7 @@ export class Timer implements Feature {
     this.count = 1;
     this.instruction_index = 3;
     this.instruction_values = instructionValues();
-    this.repeat_index = 5;
+    this.repeat_index = 4;
     this.repeat_values = repeatValues();
   }
 
@@ -465,7 +465,7 @@ export class HttpOutcall implements Feature {
     this.request_values = networkValues();
     this.response_index = 4;
     this.response_values = networkValues();
-    this.repeat_index = 4;
+    this.repeat_index = 3;
     this.repeat_values = repeatValues();
   }
 

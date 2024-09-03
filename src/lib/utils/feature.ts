@@ -559,9 +559,8 @@ function countToString(value: number): string {
 }
 
 const REPEAT: Array<[number, string]> = [
-  [0, "Never"],
-  [1 / 28, "Every 4 weeks"],
-  [1 / 14, "Every 2 weeks"],
+  [0, "Once"],
+  [1 / 30, "Every month"],
   [1 / 7, "Every week"],
   [1, "Every day"],
   [24, "Every hour"],
@@ -573,6 +572,6 @@ function repeatValues(): number[] {
 }
 
 function repeatToString(value: number): string {
-  const elem = REPEAT.find((x) => x[0] === value) ?? [0, "Never"];
+  const elem = REPEAT.find((x) => x[0] === value) ?? [0, "Once"];
   return elem[1];
 }

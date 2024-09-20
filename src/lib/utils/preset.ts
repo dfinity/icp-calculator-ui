@@ -1,5 +1,5 @@
 import {
-  Call,
+  Caller,
   Canister,
   Ingress,
   Storage,
@@ -64,7 +64,7 @@ export function decentralizedExchange(tradesPerDay: number): Feature[] {
   ingress.count = tradesPerDay * INGRESS_PER_TRADE;
   features.push(ingress);
 
-  const call = new Call();
+  const call = new Caller();
   call.count = tradesPerDay * CALLS_PER_TRADE;
   features.push(call);
 

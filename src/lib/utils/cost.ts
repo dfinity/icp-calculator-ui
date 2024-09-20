@@ -11,13 +11,16 @@ export enum Category {
   Compute,
   IngressExecution,
   IngressNetwork,
-  CallExecution,
-  CallNetwork,
+  QueryExecution,
+  QueryNetwork,
+  CallerExecution,
+  CallerNetwork,
+  CalleeExecution,
   Timer,
   Heartbeat,
-  HttpOutcall,
   Ecdsa,
   Schnorr,
+  HttpOutcall,
   Total,
 }
 
@@ -70,14 +73,20 @@ export class Cost {
         return "Storage";
       case Category.Compute:
         return "Compute";
-      case Category.CallExecution:
-        return "Call:Exe";
-      case Category.CallNetwork:
-        return "Call:Net";
+      case Category.CallerExecution:
+        return "Caller:Exe";
+      case Category.CallerNetwork:
+        return "Caller:Net";
+      case Category.CalleeExecution:
+        return "Callee:Exe";
       case Category.IngressExecution:
         return "Ingress:Exe";
       case Category.IngressNetwork:
         return "Ingress:Net";
+      case Category.QueryExecution:
+        return "Query:Exe";
+      case Category.QueryNetwork:
+        return "Query:Net";
       case Category.Timer:
         return "Timer";
       case Category.Heartbeat:

@@ -260,6 +260,11 @@ button {
   font-size: 0.8em;
 }
 
+.button--info {
+  color: var(--cv-neutral-70);
+  font-size: 0.8em;
+}
+
 .button--right {
   display: block;
   margin-left: auto;

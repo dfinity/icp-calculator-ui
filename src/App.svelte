@@ -89,6 +89,7 @@
   }
 
   export let userFeatures: Feature[] = [];
+  export let explained: number[] = [];
 
   let newlyAdded = -1;
 
@@ -131,7 +132,6 @@
   function toggleCart() {
     cartVisible = !cartVisible;
   }
-
 </script>
 
 <main>
@@ -211,48 +211,56 @@
   <main class="l-horizontal l-stack l-stack--large">
     <!-- left sidebar -->
     <div class="l-1/2 l-1/1@mobile">
-      <Card tag="section"  class="cart {cartVisible ? 'cart--visible' : 'cart--hidden'}">
+      <Card
+        tag="section"
+        class="cart {cartVisible ? 'cart--visible' : 'cart--hidden'}"
+      >
         <div class="cart__summary">
-        <div class="l-horizontal l-horizontal--center">
-          <strong class="l-grow">Days</strong>
-          <div class="l-1/2 l-shrink">
-            <Number
-              type="increment"
-              value={vizDays}
-              onChange={(value) => (vizDays = value)}
-            />
+          <div class="l-horizontal l-horizontal--center">
+            <strong class="l-grow">Days</strong>
+            <div class="l-1/2 l-shrink">
+              <Number
+                type="increment"
+                value={vizDays}
+                onChange={(value) => (vizDays = value)}
+              />
+            </div>
           </div>
-        </div>
-        <hr class="l-stack l-stack--large" />
-        <div class="cart__summary">
-          <div class="l-horizontal l-stack l-stack--large">
-            {#if vizData.length > 0}
-              <div class="l-grow">
-                <PieChart data={vizData} />
-              </div>
-              <div class="l-2/3">
-                <PieChartLegend data={vizData} {total} />
-              </div>
-            {:else}
-              <div class="l-grow">
-                Nothing to calculate. Start by adding features. 
-              </div>
-            {/if}
+          <hr class="l-stack l-stack--large" />
+          <div class="cart__summary">
+            <div class="l-horizontal l-stack l-stack--large">
+              {#if vizData.length > 0}
+                <div class="l-grow">
+                  <PieChart data={vizData} />
+                </div>
+                <div class="l-2/3">
+                  <PieChartLegend data={vizData} {total} />
+                </div>
+              {:else}
+                <div class="l-grow">
+                  Nothing to calculate. Start by adding features.
+                </div>
+              {/if}
+            </div>
           </div>
-        </div>
-        <button class="button button--primary button--full l-stack  l-stack--large" on:click={toggleCart}>Add a feature</button>
+          <button
+            class="button button--primary button--full l-stack l-stack--large"
+            on:click={toggleCart}>Add a feature</button
+          >
         </div>
         <aside class="cart__items">
-        <div class="toolbar">
-          {#each features as feature}
-            <button
-              class="button button--primary l-1/2 l-stack"
-              aria-label="add to cart"
-              on:click={() => {addUserFeature(feature.build()); toggleCart()}}
-              >+{feature.label}</button
-            >
-          {/each}
-        </div>
+          <div class="toolbar">
+            {#each features as feature}
+              <button
+                class="button button--primary l-1/2 l-stack"
+                aria-label="add to cart"
+                on:click={() => {
+                  addUserFeature(feature.build());
+                  toggleCart();
+                }}>+{feature.label}</button
+              >
+            {/each}
+          </div>
         </aside>
       </Card>
     </div>
@@ -260,11 +268,16 @@
     <!-- right cart content -->
     <section class="l-1/2 l-1/1@mobile" aria-label="Cart Contents">
       <div class="feature-container l-vertical l-horizontal--center">
-        <h1 class="t-discrete">Configure added features: </h1>
+        <h1 class="t-discrete">Configure added features:</h1>
         {#each userFeatures as feature (feature.id)}
-          <Card class="card" tag="aside" aria-label={`feature-${feature.id}`} highlight={feature.id == newlyAdded}>
+          <Card
+            class="card"
+            tag="aside"
+            aria-label={`feature-${feature.id}`}
+            highlight={feature.id == newlyAdded}
+          >
             {#each feature.fields() as f, i}
-              <div class="l-horizontal {i > 0 ? "l-stack" : ""}">
+              <div class="l-horizontal {i > 0 ? 'l-stack' : ''}">
                 {#if i == 0}
                   <strong class="l-grow">{f.label}</strong>
                 {:else}
@@ -283,11 +296,37 @@
                 </div>
               </div>
             {/each}
-            <button
-              class="button button--text button--danger button--left"
-              on:click={() => removeUserFeature(feature.id)}
-              >Remove
-            </button>
+            <div class="l-horizontal l-stack">
+              {#if explained.indexOf(feature.id) != -1}
+                <div class="t-discrete l-2/3">
+                  {feature.info()}
+                  <button
+                    class="button button--text button--danger button--left"
+                    on:click={() => {
+                      explained = explained.filter((x) => x != feature.id);
+                    }}
+                  >
+                    ««
+                  </button>
+                </div>
+              {:else}
+                &nbsp;
+                <button
+                  class="button button--text button--danger button--left"
+                  on:click={() => {
+                    explained.push(feature.id);
+                    explained = explained;
+                  }}
+                >
+                  ⓘ
+                </button>
+              {/if}
+              <button
+                class="button button--text button--danger button--right"
+                on:click={() => removeUserFeature(feature.id)}
+                >Remove
+              </button>
+            </div>
           </Card>
         {/each}
       </div>
@@ -329,5 +368,4 @@
   :global(.cart--visible) .cart__summary {
     display: none;
   }
-
 </style>

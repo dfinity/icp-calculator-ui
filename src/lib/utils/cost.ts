@@ -8,6 +8,7 @@ export enum Kind {
 export enum Category {
   Canister,
   Storage,
+  Compute,
   IngressExecution,
   IngressNetwork,
   CallExecution,
@@ -15,6 +16,8 @@ export enum Category {
   Timer,
   Heartbeat,
   HttpOutcall,
+  Ecdsa,
+  Schnorr,
   Total,
 }
 
@@ -65,6 +68,8 @@ export class Cost {
         return "Canister";
       case Category.Storage:
         return "Storage";
+      case Category.Compute:
+        return "Compute";
       case Category.CallExecution:
         return "Call:Exe";
       case Category.CallNetwork:
@@ -79,6 +84,10 @@ export class Cost {
         return "Heartbeat";
       case Category.HttpOutcall:
         return "HttpOutcall";
+      case Category.Ecdsa:
+        return "Ecdsa";
+      case Category.Schnorr:
+        return "Schnorr";
     }
     return "";
   }

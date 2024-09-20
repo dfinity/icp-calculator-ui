@@ -13,6 +13,9 @@ import { type Amount } from "./cost";
 const calcUSD = calculators().calculatorUSD;
 const calcCycles = calculators().calculatorCycles;
 
+const calcUSD28 = calculators({ subnetSize: 28 }).calculatorUSD;
+const calcCycles28 = calculators({ subnetSize: 28 }).calculatorCycles;
+
 export function canister(count: number): Amount {
   const usd = (calcUSD.canisterCreation() * count) as USD;
   const cycles = (calcCycles.canisterCreation() * count) as Cycles;
@@ -39,6 +42,28 @@ export function storage(
   return { usd, cycles };
 }
 
+export function memoryAllocation(
+  size: Bytes,
+  duration: Duration,
+  count: number,
+): Amount {
+  const usd = (calcUSD.memoryAllocation(size, duration) * count) as USD;
+  const cycles = (calcCycles.memoryAllocation(size, duration) *
+    count) as Cycles;
+  return { usd, cycles };
+}
+
+export function computeAllocation(
+  percent: number,
+  duration: Duration,
+  count: number,
+): Amount {
+  const usd = (calcUSD.computeAllocation(percent, duration) * count) as USD;
+  const cycles = (calcCycles.computeAllocation(percent, duration) *
+    count) as Cycles;
+  return { usd, cycles };
+}
+
 export function message(
   mode: Mode,
   direction: Direction,
@@ -57,5 +82,27 @@ export function httpOutcall(
 ): Amount {
   const usd = (calcUSD.httpOutcall(request, response) * count) as USD;
   const cycles = (calcCycles.httpOutcall(request, response) * count) as Cycles;
+  return { usd, cycles };
+}
+
+export function signWithEcdsa(
+  payload: Bytes,
+  signature: Bytes,
+  count: number,
+): Amount {
+  const usd = (calcUSD28.signWithEcdsa(payload, signature) * count) as USD;
+  const cycles = (calcCycles28.signWithEcdsa(payload, signature) *
+    count) as Cycles;
+  return { usd, cycles };
+}
+
+export function signWithSchnorr(
+  payload: Bytes,
+  signature: Bytes,
+  count: number,
+): Amount {
+  const usd = (calcUSD28.signWithSchnorr(payload, signature) * count) as USD;
+  const cycles = (calcCycles28.signWithSchnorr(payload, signature) *
+    count) as Cycles;
   return { usd, cycles };
 }

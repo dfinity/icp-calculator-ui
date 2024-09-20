@@ -6,7 +6,17 @@ import {
   Direction,
 } from "@dfinity/icp-calculator";
 import { Breakdown, Category, Cost, Kind } from "./cost";
-import { canister, execution, httpOutcall, message, storage } from "./calc";
+import {
+  canister,
+  computeAllocation,
+  execution,
+  httpOutcall,
+  memoryAllocation,
+  message,
+  signWithEcdsa,
+  signWithSchnorr,
+  storage,
+} from "./calc";
 
 const KB: number = 1024;
 const MB: number = 1024 * KB;
@@ -62,6 +72,26 @@ export const features = [
     label: "Heartbeat",
     info: "",
     build: () => new Heartbeat(),
+  },
+  {
+    label: "MemoryAllocation",
+    info: "",
+    build: () => new MemoryAllocation(),
+  },
+  {
+    label: "ComputeAllocation",
+    info: "",
+    build: () => new ComputeAllocation(),
+  },
+  {
+    label: "Ecdsa",
+    info: "",
+    build: () => new Ecdsa(),
+  },
+  {
+    label: "Schnorr",
+    info: "",
+    build: () => new Schnorr(),
   },
   {
     label: "HttpOutcall",
@@ -136,6 +166,96 @@ export class Storage implements Feature {
         Kind.PerDay,
         Category.Storage,
         storage(bytes, Duration.fromDays(1), this.count),
+      ),
+    );
+    return result;
+  }
+}
+
+export class MemoryAllocation implements Feature {
+  id: number;
+  count: number;
+  storage_index: number;
+  storage_values: number[];
+
+  constructor() {
+    this.id = nextId++;
+    this.count = 1;
+    this.storage_index = 2;
+    this.storage_values = storageValues();
+  }
+
+  fields(): Field[] {
+    return [
+      {
+        label: "MemoryAllocation",
+        type: "increment",
+        default: this.count,
+        onChange: (value) => (this.count = value),
+      },
+      {
+        label: "Size",
+        type: "range",
+        values: this.storage_values.map(bytesToString),
+        default: this.storage_index,
+        onChange: (value) => (this.storage_index = value),
+      },
+    ];
+  }
+
+  cost(): Breakdown {
+    const result = new Breakdown();
+    const bytes = this.storage_values[this.storage_index] as Bytes;
+    result.add(
+      new Cost(
+        Kind.PerDay,
+        Category.Storage,
+        memoryAllocation(bytes, Duration.fromDays(1), this.count),
+      ),
+    );
+    return result;
+  }
+}
+
+export class ComputeAllocation implements Feature {
+  id: number;
+  count: number;
+  percent_index: number;
+  percent_values: number[];
+
+  constructor() {
+    this.id = nextId++;
+    this.count = 1;
+    this.percent_index = 2;
+    this.percent_values = percentValues();
+  }
+
+  fields(): Field[] {
+    return [
+      {
+        label: "ComputeAllocation",
+        type: "increment",
+        default: this.count,
+        onChange: (value) => (this.count = value),
+      },
+      {
+        label: "Size",
+        type: "range",
+        values: this.percent_values.map(percentToString),
+        default: this.percent_index,
+        onChange: (value) => (this.percent_index = value),
+      },
+    ];
+  }
+
+  cost(): Breakdown {
+    const result = new Breakdown();
+    const percent = this.percent_values[this.percent_index];
+    result.add(
+      new Cost(
+        Kind.PerDay,
+        Category.Compute,
+        computeAllocation(percent, Duration.fromDays(1), this.count),
       ),
     );
     return result;
@@ -520,6 +640,104 @@ export class HttpOutcall implements Feature {
   }
 }
 
+export class Ecdsa implements Feature {
+  id: number;
+  count: number;
+
+  repeat_index: number;
+  repeat_values: number[];
+
+  constructor() {
+    this.id = nextId++;
+    this.count = 1;
+    this.repeat_index = 3;
+    this.repeat_values = repeatValues();
+  }
+
+  fields(): Field[] {
+    return [
+      {
+        label: "Ecdsa",
+        type: "increment",
+        default: this.count,
+        onChange: (value) => (this.count = value),
+      },
+      {
+        label: "Frequency",
+        type: "range",
+        values: this.repeat_values.map(repeatToString),
+        default: this.repeat_index,
+        onChange: (value) => (this.repeat_index = value),
+      },
+    ];
+  }
+
+  cost(): Breakdown {
+    const result = new Breakdown();
+    const repeat = this.repeat_values[this.repeat_index];
+
+    const count = repeat === 0 ? this.count : this.count * repeat;
+    const kind = repeat === 0 ? Kind.OneTime : Kind.PerDay;
+    result.add(
+      new Cost(
+        kind,
+        Category.Ecdsa,
+        signWithEcdsa(32 as Bytes, 32 as Bytes, count),
+      ),
+    );
+    return result;
+  }
+}
+
+export class Schnorr implements Feature {
+  id: number;
+  count: number;
+
+  repeat_index: number;
+  repeat_values: number[];
+
+  constructor() {
+    this.id = nextId++;
+    this.count = 1;
+    this.repeat_index = 3;
+    this.repeat_values = repeatValues();
+  }
+
+  fields(): Field[] {
+    return [
+      {
+        label: "Schnorr",
+        type: "increment",
+        default: this.count,
+        onChange: (value) => (this.count = value),
+      },
+      {
+        label: "Frequency",
+        type: "range",
+        values: this.repeat_values.map(repeatToString),
+        default: this.repeat_index,
+        onChange: (value) => (this.repeat_index = value),
+      },
+    ];
+  }
+
+  cost(): Breakdown {
+    const result = new Breakdown();
+    const repeat = this.repeat_values[this.repeat_index];
+
+    const count = repeat === 0 ? this.count : this.count * repeat;
+    const kind = repeat === 0 ? Kind.OneTime : Kind.PerDay;
+    result.add(
+      new Cost(
+        kind,
+        Category.Schnorr,
+        signWithSchnorr(32 as Bytes, 32 as Bytes, count),
+      ),
+    );
+    return result;
+  }
+}
+
 function storageValues(): number[] {
   return [100 * KB, 1 * MB, 10 * MB, 100 * MB, 1 * GB, 10 * GB, 100 * GB];
 }
@@ -530,6 +748,10 @@ function instructionValues(): number[] {
 
 function networkValues(): number[] {
   return [0, 256, 512, 1 * KB, 10 * KB, 100 * KB, 1 * MB, 2 * MB];
+}
+
+function percentValues(): number[] {
+  return [0, 1, 10, 20, 30, 50, 80, 100];
 }
 
 function bytesToString(bytes: number): string {
@@ -556,6 +778,10 @@ function countToString(value: number): string {
     return `${value / K} K`;
   }
   return `${value}`;
+}
+
+function percentToString(percent: number): string {
+  return `${percent}%`;
 }
 
 const REPEAT: Array<[number, string]> = [

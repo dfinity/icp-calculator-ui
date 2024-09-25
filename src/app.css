@@ -221,8 +221,7 @@ hr {
   line-height: 1.2;
 }
 
-.button,
-button {
+.button {
   position: relative;
   font-size: var(--sr-font-base);
   font-weight: normal;
@@ -270,7 +269,6 @@ button {
   margin-left: auto;
 }
 
-button::before,
 .button::before {
   position: absolute;
   content: "";
@@ -289,7 +287,6 @@ button::before,
   pointer-events: none;
 }
 
-button:hover::before,
 .button:hover::before {
   transform: translate(-50%, -50%) translateY(-50%);
   filter: blur(4rem);
@@ -508,4 +505,41 @@ input[type="range"]:focus::-moz-range-thumb {
 
 .stretch-vertical > * {
   flex: 1;
+}
+
+.dropdown {
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  border-radius: var(--sr-button-radius);
+}
+
+.dropdown-item {
+  position: relative;
+  font-size: var(--sr-font-base);
+  font-weight: normal;
+  text-align: center;
+  padding: var(--sr-button-gutter-y) var(--sr-button-gutter-x);
+  background-color: var(--cr-card);
+  color: var(--cr-onButton);
+  cursor: pointer;
+  transition:
+    background-color 0.12s ease,
+    color 0.12s ease;
+  border: none;
+  overflow: clip;
+  vertical-align: middle;
+  touch-action: manipulation;
+}
+
+.dropdown-item:hover {
+  background-color: var(--cr-onButton);
+  color: var(--cr-card);
+}
+
+.dropdown-item-first {
+  border-radius: var(--sr-button-radius) var(--sr-button-radius) 0 0;
+}
+
+.dropdown-item-last {
+  border-radius: 0 0 var(--sr-button-radius) var(--sr-button-radius);
 }

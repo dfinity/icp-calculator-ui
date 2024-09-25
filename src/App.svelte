@@ -116,15 +116,18 @@
 
   let selectedPreset = "landing";
 
-  togglePreset("landing");
+  let presetVisible = false;
 
-  function togglePreset(label: "landing" | "social" | "dex" | "custom") {
+  loadPreset("landing");
+
+  function loadPreset(label: "landing" | "social" | "dex" | "custom") {
     if (selectedPreset == "custom") {
       presets.custom = [...userFeatures];
     }
     userFeatures = [...presets[label]];
     selectedPreset = label;
     newlyAdded = -1;
+    presetVisible = false;
   }
 
   let cartVisible = false;
@@ -132,80 +135,49 @@
   function toggleCart() {
     cartVisible = !cartVisible;
   }
+
+  function togglePreset() {
+    presetVisible = !presetVisible;
+  }
 </script>
 
 <main>
   <h1>ICP Pricing Calculator<sup>β</sup></h1>
 
   <aside class="l-stack">
-    <form class="l-stack">
-      <ul class="l-horizontal">
-        <li class="l-1/4 l-1/2@mobile stretch-vertical">
-          <Card tag="label" selectable={true}>
-            <span class="icon">
-              <PagesLine />
-            </span>
-            <input
-              type="radio"
-              name="preset"
-              value="1"
-              checked={selectedPreset == "landing"}
-              on:change={() => togglePreset("landing")}
-            />
-            <strong class="h2">Landing Page</strong>
-            <span class="t-discrete">&nbsp;</span>
-          </Card>
-        </li>
-        <li class="l-1/4 l-1/2@mobile stretch-vertical">
-          <Card tag="label" selectable={true}>
-            <span class="icon">
-              <GroupLine />
-            </span>
-            <input
-              type="radio"
-              name="preset"
-              value="2"
-              checked={selectedPreset == "social"}
-              on:change={() => togglePreset("social")}
-            />
-            <strong class="h2">Social network</strong>
-            <span class="t-discrete">1000 active users</span>
-          </Card>
-        </li>
-        <li class="l-1/4 l-1/2@mobile stretch-vertical">
-          <Card tag="label" selectable={true}>
-            <span class="icon">
-              <CoinsLine />
-            </span>
-            <input
-              type="radio"
-              name="preset"
-              value="3"
-              checked={selectedPreset == "dex"}
-              on:change={() => togglePreset("dex")}
-            />
-            <strong class="h2">DEX</strong>
-            <span class="t-discrete">1000 trades per day</span>
-          </Card>
-        </li>
-        <li class="l-1/4 l-1/2@mobile stretch-vertical">
-          <Card tag="label" selectable={true}>
-            <span class="icon">
-              <PencilLine />
-            </span>
-            <input
-              type="radio"
-              name="preset"
-              value="4"
-              checked={selectedPreset == "custom"}
-              on:change={() => togglePreset("custom")}
-            />
-            <strong class="h2">Custom</strong>
-            <span class="t-discrete">&nbsp;</span>
-          </Card>
-        </li>
-      </ul>
-    </form>
+    <a href="#/" on:click={togglePreset}> Load a preset </a> for a quick start
+
+    {#if presetVisible}
+      <div class="l-1/2 dropdown l-vertical">
+        <button
+          class="dropdown-item dropdown-item-first l-horizontal"
+          on:click={() => loadPreset("landing")}
+        >
+          <span class="icon">
+            <PagesLine />
+          </span>
+          &nbsp; Landing Page
+        </button>
+        <button
+          class="dropdown-item l-horizontal"
+          on:click={() => loadPreset("social")}
+        >
+          <span class="icon">
+            <GroupLine />
+          </span>
+          &nbsp; Social network with 1000 active users
+        </button>
+        <button
+          class="dropdown-item dropdown-item-last l-horizontal"
+          on:click={() => loadPreset("dex")}
+        >
+          <span class="icon">
+            <CoinsLine />
+          </span>
+          &nbsp; DEX with 1000 trades per day
+        </button>
+      </div>
+    {/if}
   </aside>
 
   <main class="l-horizontal l-stack l-stack--large">

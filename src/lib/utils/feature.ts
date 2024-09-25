@@ -258,7 +258,7 @@ export class ComputeAllocation implements Feature {
         onChange: (value) => (this.count = value),
       },
       {
-        label: "Size",
+        label: "Capacity",
         type: "range",
         values: this.percent_values.map(percentToString),
         default: this.percent_index,
@@ -1005,7 +1005,7 @@ function networkValues(): number[] {
 }
 
 function percentValues(): number[] {
-  return [0, 1, 10, 20, 30, 50, 80, 100];
+  return [0, 1, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
 }
 
 function bytesToString(bytes: number): string {

@@ -64,7 +64,7 @@
     {#if data.find((x) => x.kind == Kind.OneTime)}
       <li>
         <span class="piechart-legend__label t-discrete"
-          >Feature<sup>{getKind(Kind.OneTime)}</sup> means a one-time cost</span
+          >:<sup>{getKind(Kind.OneTime)}</sup> means one-time cost</span
         >
       </li>
     {/if}

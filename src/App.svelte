@@ -257,9 +257,14 @@
                 on:click={() => {
                   addUserFeature(feature.build());
                   toggleCart();
-                }}>+{feature.label}</button
+                }}>{feature.label}</button
               >
             {/each}
+            <button
+              class="button l-1/2 l-stack"
+              aria-label="cancel"
+              on:click={() => toggleCart()}>Cancel</button
+            >
           </div>
         </aside>
       </Card>

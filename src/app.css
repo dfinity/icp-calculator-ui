@@ -456,6 +456,11 @@ input[type="range"]:focus::-moz-range-thumb {
   width: calc(66.666% - var(--sr-grid-gutter));
 }
 
+.l-3\/4 {
+  flex: 0 0 calc(75% - var(--sr-grid-gutter));
+  width: calc(75% - var(--sr-grid-gutter));
+}
+
 .l-grow {
   flex-grow: 1;
 }
@@ -483,6 +488,11 @@ input[type="range"]:focus::-moz-range-thumb {
   .l-2\/3\@mobile {
     flex: 0 0 calc(66.666% - var(--sr-grid-gutter));
     width: calc(66.666% - var(--sr-grid-gutter));
+  }
+
+  .l-3\/4\@mobile {
+    flex: 0 0 calc(75% - var(--sr-grid-gutter));
+    width: calc(75%- var(--sr-grid-gutter));
   }
 
   .l-1\/4\@mobile {

@@ -54,18 +54,30 @@
       </li>
     {/each}
 
-    {#if data.find(x => x.label.includes(":Exe"))}
-    <li>
-      <span class="piechart-legend__label">
-        <hr />
-      </span>
-    </li>
-    <li>
-      <span class="piechart-legend__label t-discrete">:Exe means Execution</span>
-    </li>
-    <li>
-      <span class="piechart-legend__label t-discrete">:Net means Network</span>
-    </li>
+    {#if data.find((x) => x.label.includes(":Exe") || x.kind === Kind.OneTime)}
+      <li>
+        <span class="piechart-legend__label">
+          <hr />
+        </span>
+      </li>
+    {/if}
+    {#if data.find((x) => x.kind == Kind.OneTime)}
+      <li>
+        <span class="piechart-legend__label t-discrete"
+          >Feature<sup>{getKind(Kind.OneTime)}</sup> means a one-time cost</span
+        >
+      </li>
+    {/if}
+    {#if data.find((x) => x.label.includes(":Exe"))}
+      <li>
+        <span class="piechart-legend__label t-discrete"
+          >:Exe means Execution</span
+        >
+      </li>
+      <li>
+        <span class="piechart-legend__label t-discrete">:Net means Network</span
+        >
+      </li>
     {/if}
     <li>
       <span class="piechart-legend__label">
@@ -79,9 +91,7 @@
       >
     </li>
     <li>
-      <span class="piechart-legend__label"
-        >- One-time<sup>{getKind(Kind.OneTime)}</sup></span
-      >
+      <span class="piechart-legend__label">- One-time</span>
       <strong class="piechart-legend__value"
         >{total.unit}{round(total.oneTime)}</strong
       >

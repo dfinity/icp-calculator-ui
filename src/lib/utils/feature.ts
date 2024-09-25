@@ -178,8 +178,9 @@ export class Storage implements Feature {
 
   info(): string {
     return `
-      Canisters pay for storage consumed by their Wasm memory, Wasm binary,
-      stable memory, and enqueued messages. The payment is recurrent.
+      Canisters pay for the storage they consumed. This includes storage for
+      the Wasm binary, the Wasm memory, the stable memory, and enqueued
+      messages.
     `;
   }
 }
@@ -230,7 +231,7 @@ export class MemoryAllocation implements Feature {
 
   info(): string {
     return `
-      Canister can reserve some amount of storage ahead of time by setting
+      Canisters can reserve some amount of storage ahead of time by setting
       memory-allocation in their canister settings.
     `;
   }
@@ -282,10 +283,9 @@ export class ComputeAllocation implements Feature {
 
   info(): string {
     return `
-      Canister can reserve a share of compute capacity by setting
-      compute-allocation in their canister settings.
-      Compute allocation is expressed in percents and denotes the percentage of
-      an execution core reserved for the canister.
+      Canisters can reserve a share of compute capacity by setting
+      compute-allocation in their canister settings. Compute allocation is
+      expressed in percents and denotes the percentage of an execution core.
     `;
   }
 }
@@ -388,8 +388,7 @@ export class Ingress implements Feature {
   info(): string {
     return `
       Messages that users send to canisters are called ingress messages.
-      Ingress messages are executed on all nodes. The cost depends on the number
-      of executed instructions and on bytes transferred over the network.
+      Ingress messages are added to blocks and executed on all nodes of the subnet.
     `;
   }
 }
@@ -491,8 +490,8 @@ export class Query implements Feature {
 
   info(): string {
     return `
-      Queries are read-only messages that are executed by a single node.
-      Currently canisters do not pay for queries.
+      Queries are read-only messages that are executed by a single node and do
+      not go through consensus. Currently canisters do not pay for queries.
     `;
   }
 }
@@ -594,9 +593,9 @@ export class Caller implements Feature {
 
   info(): string {
     return `
-      A canister can call another canister. This item computes costs of the caller,
-      which consist of the network costs to transfer bytes and the execution
-      cost to run the response callback.
+      A canister can call another canister. This item computes call costs for
+      the caller, which consist of the network costs to transfer bytes and the
+      execution cost process the response.
     `;
   }
 }
@@ -666,7 +665,7 @@ export class Callee implements Feature {
   info(): string {
     return `
       This item computes the costs for a canister that is being called by
-      another canister.  This cost depends only on executed instructions because
+      another canister. This cost depends only on executed instructions because
       the network costs are covered by the caller.
     `;
   }

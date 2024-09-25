@@ -298,7 +298,7 @@
             {/each}
             <div class="l-horizontal l-stack">
               {#if explained.indexOf(feature.id) != -1}
-                <div class="t-discrete l-2/3">
+                <div class="t-discrete l-3/4">
                   {feature.info()}
                   <button
                     class="button button--text button--danger button--left"

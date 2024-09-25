@@ -148,15 +148,14 @@
     <a href="#/" on:click={togglePreset}> Load a preset </a> for a quick start
 
     {#if presetVisible}
-      <div class="l-1/2 dropdown l-vertical">
+      <div class="l-1/2 l-1/1@mobile dropdown l-vertical">
         <button
           class="dropdown-item dropdown-item-first l-horizontal"
           on:click={() => loadPreset("landing")}
         >
           <span class="icon">
             <PagesLine />
-          </span>
-          &nbsp; Landing Page
+          </span>&nbsp;Landing Page
         </button>
         <button
           class="dropdown-item l-horizontal"
@@ -164,8 +163,7 @@
         >
           <span class="icon">
             <GroupLine />
-          </span>
-          &nbsp; Social network with 1000 active users
+          </span>&nbsp;Social network with 1K active users
         </button>
         <button
           class="dropdown-item dropdown-item-last l-horizontal"
@@ -173,8 +171,7 @@
         >
           <span class="icon">
             <CoinsLine />
-          </span>
-          &nbsp; DEX with 1000 trades per day
+          </span>&nbsp;DEX with 1K trades per day
         </button>
       </div>
     {/if}

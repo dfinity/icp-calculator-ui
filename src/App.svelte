@@ -26,6 +26,7 @@
     landingPage,
     socialNetwork,
   } from "./lib/utils/preset";
+  import { updateSubnetSize } from "./lib/utils/calc";
 
   // types
   type PieChartData = {
@@ -45,6 +46,8 @@
 
   let vizData: PieChartData[] = [];
   let vizDays = 365;
+  let subnetValues = [13, 28, 31, 34, 40];
+  let subnetIndex = 0;
   let total = {
     unit: "$",
     days: vizDays,
@@ -53,6 +56,7 @@
   };
 
   $: {
+    updateSubnetSize(subnetValues[subnetIndex]);
     let costs = userFeatures.map((feature) => feature.cost());
     let breakdown = new Breakdown();
     for (const x of costs) {
@@ -192,6 +196,17 @@
                 type="increment"
                 value={vizDays}
                 onChange={(value) => (vizDays = value)}
+              />
+            </div>
+          </div>
+          <div class="l-horizontal l-horizontal--center l-stack">
+            <strong class="l-grow">Subnet</strong>
+            <div class="l-1/2 l-shrink">
+              <Number
+                type="range"
+                list={subnetValues.map((x) => `${x} nodes`)}
+                value={subnetIndex}
+                onChange={(value) => (subnetIndex = value)}
               />
             </div>
           </div>

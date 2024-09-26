@@ -10,8 +10,8 @@ import {
 } from "@dfinity/icp-calculator";
 import { type Amount } from "./cost";
 
-const calcUSD = calculators().calculatorUSD;
-const calcCycles = calculators().calculatorCycles;
+let calcUSD = calculators().calculatorUSD;
+let calcCycles = calculators().calculatorCycles;
 
 const calcUSD28 = calculators({ subnetSize: 28 }).calculatorUSD;
 const calcCycles28 = calculators({ subnetSize: 28 }).calculatorCycles;
@@ -105,4 +105,9 @@ export function signWithSchnorr(
   const cycles = (calcCycles28.signWithSchnorr(payload, signature) *
     count) as Cycles;
   return { usd, cycles };
+}
+
+export function updateSubnetSize(subnetSize: number) {
+  calcUSD = calculators({ subnetSize }).calculatorUSD;
+  calcCycles = calculators({ subnetSize }).calculatorCycles;
 }

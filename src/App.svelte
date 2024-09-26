@@ -320,6 +320,18 @@
         {/each}
       </div>
     </section>
+    <hr class="l-1/1 l-stack l-stack--large" />
+    <section class="l-1/1 links-container" aria-label="Links">
+      <a
+        href="https://internetcomputer.org/docs/current/developer-docs/gas-cost"
+        class="t-center"
+      >
+        <img src="/icp.svg" alt="docs" height="20" />
+      </a>
+      <a href="https://github.com/dfinity/icp-calculator-ui" class="t-center">
+        <img src="/github-mark.svg" alt="source code" height="20" />
+      </a>
+    </section>
   </main>
 </main>
 
@@ -340,6 +352,13 @@
     border: solid 1px;
     border-color: var(--cr-card-border);
     border-radius: var(--sr-card-radius);
+  }
+
+  .links-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 10px;
   }
 
   :global(.cart--hidden) .cart__items {

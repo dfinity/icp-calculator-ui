@@ -26,8 +26,6 @@ const K = 1000;
 const M = 1000 * K;
 const B = 1000 * M;
 
-let nextId = 0;
-
 export interface Field {
   label: string;
   type: "increment" | "range";
@@ -37,7 +35,6 @@ export interface Field {
 }
 
 export interface Feature {
-  id: number;
   fields: () => Field[];
   cost: () => Breakdown;
   info: () => string;
@@ -99,11 +96,9 @@ export const features = [
 ];
 
 export class Canister implements Feature {
-  id: number;
   count: number;
 
   constructor() {
-    this.id = nextId++;
     this.count = 1;
   }
 
@@ -133,13 +128,11 @@ export class Canister implements Feature {
 }
 
 export class Storage implements Feature {
-  id: number;
   count: number;
   storage_index: number;
   storage_values: number[];
 
   constructor() {
-    this.id = nextId++;
     this.count = 1;
     this.storage_index = 2;
     this.storage_values = storageValues();
@@ -186,13 +179,11 @@ export class Storage implements Feature {
 }
 
 export class MemoryAllocation implements Feature {
-  id: number;
   count: number;
   storage_index: number;
   storage_values: number[];
 
   constructor() {
-    this.id = nextId++;
     this.count = 1;
     this.storage_index = 2;
     this.storage_values = storageValues();
@@ -238,13 +229,11 @@ export class MemoryAllocation implements Feature {
 }
 
 export class ComputeAllocation implements Feature {
-  id: number;
   count: number;
   percent_index: number;
   percent_values: number[];
 
   constructor() {
-    this.id = nextId++;
     this.count = 1;
     this.percent_index = 2;
     this.percent_values = percentValues();
@@ -291,7 +280,6 @@ export class ComputeAllocation implements Feature {
 }
 
 export class Ingress implements Feature {
-  id: number;
   count: number;
 
   instruction_index: number;
@@ -307,7 +295,6 @@ export class Ingress implements Feature {
   repeat_values: number[];
 
   constructor() {
-    this.id = nextId++;
     this.count = 100;
     this.instruction_index = 3;
     this.instruction_values = instructionValues();
@@ -394,7 +381,6 @@ export class Ingress implements Feature {
 }
 
 export class Query implements Feature {
-  id: number;
   count: number;
 
   instruction_index: number;
@@ -410,7 +396,6 @@ export class Query implements Feature {
   repeat_values: number[];
 
   constructor() {
-    this.id = nextId++;
     this.count = 100;
     this.instruction_index = 3;
     this.instruction_values = instructionValues();
@@ -497,7 +482,6 @@ export class Query implements Feature {
 }
 
 export class Caller implements Feature {
-  id: number;
   count: number;
 
   instruction_index: number;
@@ -513,7 +497,6 @@ export class Caller implements Feature {
   repeat_values: number[];
 
   constructor() {
-    this.id = nextId++;
     this.count = 100;
     this.instruction_index = 3;
     this.instruction_values = instructionValues();
@@ -601,7 +584,6 @@ export class Caller implements Feature {
 }
 
 export class Callee implements Feature {
-  id: number;
   count: number;
 
   instruction_index: number;
@@ -611,7 +593,6 @@ export class Callee implements Feature {
   repeat_values: number[];
 
   constructor() {
-    this.id = nextId++;
     this.count = 100;
     this.instruction_index = 3;
     this.instruction_values = instructionValues();
@@ -672,7 +653,6 @@ export class Callee implements Feature {
 }
 
 export class Timer implements Feature {
-  id: number;
   count: number;
 
   instruction_index: number;
@@ -682,7 +662,6 @@ export class Timer implements Feature {
   repeat_values: number[];
 
   constructor() {
-    this.id = nextId++;
     this.count = 1;
     this.instruction_index = 3;
     this.instruction_values = instructionValues();
@@ -742,14 +721,12 @@ export class Timer implements Feature {
 }
 
 export class Heartbeat implements Feature {
-  id: number;
   count: number;
 
   instruction_index: number;
   instruction_values: number[];
 
   constructor() {
-    this.id = nextId++;
     this.count = 1;
     this.instruction_index = 3;
     this.instruction_values = instructionValues();
@@ -799,7 +776,6 @@ export class Heartbeat implements Feature {
 }
 
 export class HttpOutcall implements Feature {
-  id: number;
   count: number;
 
   request_index: number;
@@ -812,7 +788,6 @@ export class HttpOutcall implements Feature {
   repeat_values: number[];
 
   constructor() {
-    this.id = nextId++;
     this.count = 1;
     this.request_index = 4;
     this.request_values = networkValues();
@@ -880,14 +855,12 @@ export class HttpOutcall implements Feature {
 }
 
 export class Ecdsa implements Feature {
-  id: number;
   count: number;
 
   repeat_index: number;
   repeat_values: number[];
 
   constructor() {
-    this.id = nextId++;
     this.count = 1;
     this.repeat_index = 3;
     this.repeat_values = repeatValues();
@@ -936,14 +909,12 @@ export class Ecdsa implements Feature {
 }
 
 export class Schnorr implements Feature {
-  id: number;
   count: number;
 
   repeat_index: number;
   repeat_values: number[];
 
   constructor() {
-    this.id = nextId++;
     this.count = 1;
     this.repeat_index = 3;
     this.repeat_values = repeatValues();

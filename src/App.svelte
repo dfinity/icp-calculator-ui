@@ -79,18 +79,18 @@
   }
 
   export let userFeatures: Feature[] = [];
-  export let explained: number[] = [];
+  export let explained: Feature[] = [];
 
-  let newlyAdded = -1;
+  let newlyAdded: Feature | null = null;
 
-  function removeUserFeature(id: number) {
-    newlyAdded = -1;
-    userFeatures = userFeatures.filter((f) => f.id != id);
+  function removeUserFeature(feature: Feature) {
+    newlyAdded = null;
+    userFeatures = userFeatures.filter((f) => f != feature);
   }
 
   function addUserFeature(feature: Feature) {
     userFeatures.unshift(feature);
-    newlyAdded = feature.id;
+    newlyAdded = feature;
     userFeatures = userFeatures;
   }
 
@@ -116,7 +116,7 @@
     }
     userFeatures = [...presets[label]];
     selectedPreset = label;
-    newlyAdded = -1;
+    newlyAdded = null;
     presetVisible = false;
   }
 
@@ -244,12 +244,12 @@
     <section class="l-1/2 l-1/1@mobile" aria-label="Cart Contents">
       <div class="feature-container l-vertical l-horizontal--center">
         <h1 class="t-discrete">Configure added features:</h1>
-        {#each userFeatures as feature (feature.id)}
+        {#each userFeatures as feature (feature)}
           <Card
             class="card"
             tag="aside"
-            aria-label={`feature-${feature.id}`}
-            highlight={feature.id == newlyAdded}
+            aria-label={`feature-${feature}`}
+            highlight={feature == newlyAdded}
           >
             {#each feature.fields() as f, i}
               <div class="l-horizontal {i > 0 ? 'l-stack' : ''}">
@@ -272,13 +272,13 @@
               </div>
             {/each}
             <div class="l-horizontal l-stack">
-              {#if explained.indexOf(feature.id) != -1}
+              {#if explained.indexOf(feature) != -1}
                 <div class="t-discrete l-3/4">
                   {feature.info()}
                   <button
                     class="button button--text button--danger button--left"
                     on:click={() => {
-                      explained = explained.filter((x) => x != feature.id);
+                      explained = explained.filter((x) => x !== feature);
                     }}
                   >
                     ««
@@ -289,7 +289,7 @@
                 <button
                   class="button button--text button--danger button--left"
                   on:click={() => {
-                    explained.push(feature.id);
+                    explained.push(feature);
                     explained = explained;
                   }}
                 >
@@ -298,7 +298,7 @@
               {/if}
               <button
                 class="button button--text button--danger button--right"
-                on:click={() => removeUserFeature(feature.id)}
+                on:click={() => removeUserFeature(feature)}
                 >Remove
               </button>
             </div>

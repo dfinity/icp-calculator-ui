@@ -7,15 +7,15 @@
   import CoinsLine from "./lib/icons/coins-line.svg.svelte";
   import GroupLine from "./lib/icons/group-line.svg.svelte";
   import PagesLine from "./lib/icons/pages-line.svg.svelte";
-  import { updateSubnetSize } from "./lib/utils/calc";
-  import { Breakdown, Kind } from "./lib/utils/cost";
-  import { features, type Feature } from "./lib/utils/feature";
+  import { updateSubnetSize } from "./lib/ts/calc";
+  import { Breakdown, Kind } from "./lib/ts/cost";
+  import { features, type Feature } from "./lib/ts/feature";
   import {
     decentralizedExchange,
     landingPage,
     socialNetwork,
-  } from "./lib/utils/preset";
-  import { spreadArray } from "./lib/utils/spreadArray";
+  } from "./lib/ts/preset";
+  import { spreadArray } from "./lib/ts/spreadArray";
 
   interface PieChartData {
     label: string;

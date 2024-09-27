@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { Kind } from "./utils/cost";
-  import { round } from "./utils/round";
+  import { Kind } from "./ts/cost";
+  import { round } from "./ts/round";
 
   interface PieChartData {
     label: string;

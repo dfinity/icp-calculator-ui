@@ -123,15 +123,15 @@
   }
 
   @keyframes highlight-fade {
-  0% {
-    background: var(--cr-card-highlight);
+    0% {
+      background: var(--cr-card-highlight);
+    }
+    100% {
+      background: var(--cr-card);
+    }
   }
-  100% {
-    background: var(--cr-card);
-  }
-}
 
-.card--highlight {
-  animation: highlight-fade 3s ease-out 1;
-}
+  .card--highlight {
+    animation: highlight-fade 3s ease-out 1;
+  }
 </style>

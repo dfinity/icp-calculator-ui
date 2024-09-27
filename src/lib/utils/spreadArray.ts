@@ -1,5 +1,4 @@
-import { lerp } from "./lerp";
-import type { FillFunction } from "./lerp";
+import { type FillFunction, lerp } from "./lerp";
 
 /**
  * spreads an array to the target size using interpolation.
@@ -34,17 +33,15 @@ export const spreadArray = <T>(
   const chunkArray = valuesToFill.map((value) => [value]);
 
   for (let i = 0; i < valuesToAdd; i++) {
-    (chunkArray[i % (valuesToFill.length - 1)] as T[]).push(
-      null as unknown as T,
-    );
+    chunkArray[i % (valuesToFill.length - 1)].push(null as T);
   }
 
   // Fill each chunk with interpolated values using the specified interpolation function
   for (let i = 0; i < chunkArray.length - 1; i++) {
-    const currentChunk = chunkArray[i] as T[];
-    const nextChunk = chunkArray[i + 1] as T[];
-    const currentValue = currentChunk[0] as T;
-    const nextValue = nextChunk[0] as T;
+    const currentChunk = chunkArray[i];
+    const nextChunk = chunkArray[i + 1];
+    const currentValue = currentChunk[0];
+    const nextValue = nextChunk[0];
 
     for (let j = 1; j < currentChunk.length; j++) {
       const percent = j / currentChunk.length;
@@ -52,5 +49,5 @@ export const spreadArray = <T>(
     }
   }
 
-  return chunkArray.flat() as T[];
+  return chunkArray.flat();
 };

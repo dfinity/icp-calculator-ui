@@ -1,11 +1,11 @@
 import {
   calculators,
-  type Direction,
-  type Duration,
-  type Mode,
   type Bytes,
   type Cycles,
+  type Direction,
+  type Duration,
   type Instructions,
+  type Mode,
   type USD,
 } from "@dfinity/icp-calculator";
 import { type Amount } from "./cost";

@@ -1,11 +1,10 @@
 import {
   type Bytes,
+  Direction,
   Duration,
   type Instructions,
   Mode,
-  Direction,
 } from "@dfinity/icp-calculator";
-import { Breakdown, Category, Cost, Kind } from "./cost";
 import {
   canister,
   computeAllocation,
@@ -17,16 +16,17 @@ import {
   signWithSchnorr,
   storage,
 } from "./calc";
+import { Breakdown, Category, Cost, Kind } from "./cost";
 
-const KB: number = 1024;
-const MB: number = 1024 * KB;
-const GB: number = 1024 * MB;
+const KB = 1024;
+const MB = 1024 * KB;
+const GB = 1024 * MB;
 
-const K: number = 1000;
-const M: number = 1000 * K;
-const B: number = 1000 * M;
+const K = 1000;
+const M = 1000 * K;
+const B = 1000 * M;
 
-let nextId: number = 0;
+let nextId = 0;
 
 export interface Field {
   label: string;

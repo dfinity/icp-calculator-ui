@@ -1,41 +1,29 @@
 <script lang="ts">
-  // utilities
-  import { spreadArray } from "./lib/utils/spreadArray";
-
-  // components
-  import PieChart from "./lib/PieChart.svelte";
-  import PieChartLegend from "./lib/PieChartLegend.svelte";
+  import type { USD } from "@dfinity/icp-calculator";
   import Card from "./lib/Card.svelte";
   import Number from "./lib/Number.svelte";
-
-  // icons
-  import PagesLine from "./lib/icons/pages-line.svg.svelte";
-  import GroupLine from "./lib/icons/group-line.svg.svelte";
+  import PieChart from "./lib/PieChart.svelte";
+  import PieChartLegend from "./lib/PieChartLegend.svelte";
   import CoinsLine from "./lib/icons/coins-line.svg.svelte";
-  import PencilLine from "./lib/icons/pencil-line.svg.svelte";
-  import {
-    Canister,
-    Storage,
-    features,
-    type Feature,
-  } from "./lib/utils/feature";
+  import GroupLine from "./lib/icons/group-line.svg.svelte";
+  import PagesLine from "./lib/icons/pages-line.svg.svelte";
+  import { updateSubnetSize } from "./lib/utils/calc";
   import { Breakdown, Kind } from "./lib/utils/cost";
-  import type { USD } from "@dfinity/icp-calculator";
+  import { features, type Feature } from "./lib/utils/feature";
   import {
     decentralizedExchange,
     landingPage,
     socialNetwork,
   } from "./lib/utils/preset";
-  import { updateSubnetSize } from "./lib/utils/calc";
+  import { spreadArray } from "./lib/utils/spreadArray";
 
-  // types
-  type PieChartData = {
+  interface PieChartData {
     label: string;
     kind: Kind;
     value: USD;
     unit: "$";
     color: string;
-  };
+  }
 
   // the design contains 3 colors
   const colorStops = [
@@ -68,15 +56,13 @@
     total.oneTime = breakdown.total().oneTime.amount.usd;
     total.recurrent = breakdown.total().perDay.amount.usd * vizDays;
 
-    vizData = breakdown.costs().map((x) => {
-      return {
-        label: x.label(),
-        kind: x.kind,
-        value: x.cost(vizDays).usd,
-        unit: "$",
-        color: "",
-      };
-    });
+    vizData = breakdown.costs().map((x) => ({
+      label: x.label(),
+      kind: x.kind,
+      value: x.cost(vizDays).usd,
+      unit: "$",
+      color: "",
+    }));
 
     // but we have X possible categories so lets interpolate the colors, since
     // CSS supports color mixing we don't need any color lib to do so

@@ -1,4 +1,4 @@
-import type { USD, Cycles } from "@dfinity/icp-calculator";
+import type { Cycles, USD } from "@dfinity/icp-calculator";
 
 export enum Kind {
   OneTime,

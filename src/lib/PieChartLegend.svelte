@@ -1,22 +1,21 @@
 <script lang="ts">
-  import Number from "./Number.svelte";
   import { Kind } from "./utils/cost";
   import { round } from "./utils/round";
 
-  type PieChartData = {
+  interface PieChartData {
     label: string;
     kind: Kind;
     value: number;
     unit: string;
     color: string;
-  };
+  }
 
-  type PieChartTotal = {
+  interface PieChartTotal {
     unit: string;
     days: number;
     oneTime: number;
     recurrent: number;
-  };
+  }
 
   export let data: PieChartData[] = [];
   export let total: PieChartTotal = {
@@ -25,13 +24,6 @@
     oneTime: 0,
     recurrent: 0,
   };
-
-  function getUnit() {
-    if (data && data.length) {
-      return data[0].unit;
-    }
-    return "$";
-  }
 
   function getKind(kind: Kind) {
     switch (kind) {
@@ -45,7 +37,7 @@
 
 <div class="piechart-legend">
   <ol>
-    {#each data as { label, kind, value, color, unit }, index}
+    {#each data as { label, kind, value, color, unit }}
       <li style="--c: {color};">
         <span class="piechart-legend__label"
           >{label}<sup>{getKind(kind)}</sup></span

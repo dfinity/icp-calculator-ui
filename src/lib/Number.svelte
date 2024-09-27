@@ -1,11 +1,11 @@
 <script lang="ts">
-  export let count: number = 0;
+  export let count = 0;
   export let type: "increment" | "range" = "increment";
-  export let min: number = 1;
-  export let max: number = 1000000000;
-  export let step: number = 1;
-  export let value: number = 0;
-  export let unit: string = "";
+  export let min = 1;
+  export let max = 1000000000;
+  export let step = 1;
+  export let value = 0;
+  export let unit = "";
   export let unitmultiple: string | null = null;
   export let list: string[] = [];
   export let onChange: (selected: number) => void = (_selected) => {};

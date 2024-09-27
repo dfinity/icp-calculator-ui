@@ -1,10 +1,10 @@
 <script lang="ts">
-  type PieChartData = {
+  interface PieChartData {
     label: string;
     value: number;
     unit: string;
     color: string;
-  };
+  }
 
   export let data: PieChartData[] = [];
 

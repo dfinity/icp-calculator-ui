@@ -13,3 +13,21 @@ In order to add a new ICP feature to the calculator:
 3. Add the corresponding UI element class in `src/lib/ts/feature.ts`.
 4. Add a new entry to the `FEATURES` table in `src/lib/ts/feature.ts`.
 5. If the feature introduces a new cost category, then add it in `src/lib/ts/cost.ts`.
+
+## Running a local server
+
+```
+npm run dev
+```
+
+## Deploying on local dfx
+
+```
+npm run deploy:dev
+```
+
+## Deploying on mainnet
+
+```
+npm run deploy:dev
+```

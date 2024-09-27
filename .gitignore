@@ -12,6 +12,10 @@ dist
 dist-ssr
 *.local
 
+canister/src/frontend/*
+canister/.dfx/
+canister/.env
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

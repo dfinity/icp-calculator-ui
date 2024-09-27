@@ -1,0 +1,21 @@
+{
+  "canisters": {
+    "frontend": {
+      "dependencies": [
+      ],
+      "source": [
+        "src/frontend"
+      ],
+      "type": "assets",
+      "workspace": "frontend"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "output_env_file": ".env",
+  "version": 1
+}

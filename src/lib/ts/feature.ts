@@ -17,14 +17,17 @@ import {
   storage,
 } from "./calc";
 import { Breakdown, Category, Cost, Kind } from "./cost";
-
-const KB = 1024;
-const MB = 1024 * KB;
-const GB = 1024 * MB;
-
-const K = 1000;
-const M = 1000 * K;
-const B = 1000 * M;
+import {
+  bytesToString,
+  countToString,
+  instructionValues,
+  networkValues,
+  percentToString,
+  percentValues,
+  repeatToString,
+  repeatValues,
+  storageValues,
+} from "./value";
 
 export interface Field {
   label: string;
@@ -38,62 +41,8 @@ export interface Feature {
   fields: () => Field[];
   cost: () => Breakdown;
   info: () => string;
+  label: () => string;
 }
-
-export const features = [
-  {
-    label: "Canister",
-    build: () => new Canister(),
-  },
-  {
-    label: "Storage",
-    build: () => new Storage(),
-  },
-  {
-    label: "Ingress",
-    build: () => new Ingress(),
-  },
-  {
-    label: "Query",
-    build: () => new Query(),
-  },
-  {
-    label: "Caller",
-    build: () => new Caller(),
-  },
-  {
-    label: "Callee",
-    build: () => new Callee(),
-  },
-  {
-    label: "Timer",
-    build: () => new Timer(),
-  },
-  {
-    label: "Heartbeat",
-    build: () => new Heartbeat(),
-  },
-  {
-    label: "MemoryAllocation",
-    build: () => new MemoryAllocation(),
-  },
-  {
-    label: "ComputeAllocation",
-    build: () => new ComputeAllocation(),
-  },
-  {
-    label: "Ecdsa",
-    build: () => new Ecdsa(),
-  },
-  {
-    label: "Schnorr",
-    build: () => new Schnorr(),
-  },
-  {
-    label: "HttpOutcall",
-    build: () => new HttpOutcall(),
-  },
-];
 
 export class Canister implements Feature {
   count: number;
@@ -124,6 +73,10 @@ export class Canister implements Feature {
       A canister is a smart contract with its own code and state.
       There is a one-time fee for creating a canister.
     `;
+  }
+
+  label(): string {
+    return "Canister";
   }
 }
 
@@ -176,6 +129,10 @@ export class Storage implements Feature {
       messages.
     `;
   }
+
+  label(): string {
+    return "Storage";
+  }
 }
 
 export class MemoryAllocation implements Feature {
@@ -225,6 +182,10 @@ export class MemoryAllocation implements Feature {
       Canisters can reserve some amount of storage ahead of time by setting
       memory-allocation in their canister settings.
     `;
+  }
+
+  label(): string {
+    return "MemoryAllocation";
   }
 }
 
@@ -276,6 +237,10 @@ export class ComputeAllocation implements Feature {
       compute-allocation in their canister settings. Compute allocation is
       expressed in percents and denotes the percentage of an execution core.
     `;
+  }
+
+  label(): string {
+    return "ComputeAllocation";
   }
 }
 
@@ -378,6 +343,10 @@ export class Ingress implements Feature {
       Ingress messages are added to blocks and executed on all nodes of the subnet.
     `;
   }
+
+  label(): string {
+    return "Ingress";
+  }
 }
 
 export class Query implements Feature {
@@ -478,6 +447,10 @@ export class Query implements Feature {
       Queries are read-only messages that are executed by a single node and do
       not go through consensus. Currently canisters do not pay for queries.
     `;
+  }
+
+  label(): string {
+    return "Query";
   }
 }
 
@@ -581,6 +554,10 @@ export class Caller implements Feature {
       execution cost process the response.
     `;
   }
+
+  label(): string {
+    return "Caller";
+  }
 }
 
 export class Callee implements Feature {
@@ -650,6 +627,10 @@ export class Callee implements Feature {
       the network costs are covered by the caller.
     `;
   }
+
+  label(): string {
+    return "Callee";
+  }
 }
 
 export class Timer implements Feature {
@@ -718,6 +699,10 @@ export class Timer implements Feature {
       one timer execution depends on the number of executed instructions.
     `;
   }
+
+  label(): string {
+    return "Timer";
+  }
 }
 
 export class Heartbeat implements Feature {
@@ -772,6 +757,10 @@ export class Heartbeat implements Feature {
       possible (once per block on idle subnets). Since heartbeats have no way
       of controlling their frequency, it is recommended to use timers instead.
     `;
+  }
+
+  label(): string {
+    return "Heartbeat";
   }
 }
 
@@ -852,6 +841,10 @@ export class HttpOutcall implements Feature {
       Canisters can make HTTP requests to Web 2.0 servers using HTTP outcalls.
     `;
   }
+
+  label(): string {
+    return "HttpOutcall";
+  }
 }
 
 export class Ecdsa implements Feature {
@@ -905,6 +898,10 @@ export class Ecdsa implements Feature {
       Canisters can request threshold ECDSA signatures to sign messages and
       transactions for other blockchains.
     `;
+  }
+
+  label(): string {
+    return "Ecdsa";
   }
 }
 
@@ -960,68 +957,63 @@ export class Schnorr implements Feature {
       transactions for other blockchains.
     `;
   }
-}
 
-function storageValues(): number[] {
-  return [100 * KB, 1 * MB, 10 * MB, 100 * MB, 1 * GB, 10 * GB, 100 * GB];
-}
-
-function instructionValues(): number[] {
-  return [0, 100 * K, 500 * K, 1 * M, 10 * M, 100 * M, 1 * B, 10 * B, 100 * B];
-}
-
-function networkValues(): number[] {
-  return [0, 256, 512, 1 * KB, 10 * KB, 100 * KB, 1 * MB, 2 * MB];
-}
-
-function percentValues(): number[] {
-  return [0, 1, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
-}
-
-function bytesToString(bytes: number): string {
-  if (bytes >= GB) {
-    return `${bytes / GB} GB`;
+  label(): string {
+    return "Schnorr";
   }
-  if (bytes >= MB) {
-    return `${bytes / MB} MB`;
-  }
-  if (bytes >= KB) {
-    return `${bytes / KB} KB`;
-  }
-  return `${bytes}`;
 }
 
-function countToString(value: number): string {
-  if (value >= B) {
-    return `${value / B} B`;
-  }
-  if (value >= M) {
-    return `${value / M} M`;
-  }
-  if (value >= K) {
-    return `${value / K} K`;
-  }
-  return `${value}`;
-}
-
-function percentToString(percent: number): string {
-  return `${percent}%`;
-}
-
-const REPEAT: Array<[number, string]> = [
-  [0, "Once"],
-  [1 / 30, "Every month"],
-  [1 / 7, "Every week"],
-  [1, "Every day"],
-  [24, "Every hour"],
-  [24 * 60, "Every minute"],
+export const FEATURES: { label: string; build: () => Feature }[] = [
+  {
+    label: new Canister().label(),
+    build: () => new Canister(),
+  },
+  {
+    label: new Storage().label(),
+    build: () => new Storage(),
+  },
+  {
+    label: new Ingress().label(),
+    build: () => new Ingress(),
+  },
+  {
+    label: new Query().label(),
+    build: () => new Query(),
+  },
+  {
+    label: new Caller().label(),
+    build: () => new Caller(),
+  },
+  {
+    label: new Callee().label(),
+    build: () => new Callee(),
+  },
+  {
+    label: new Timer().label(),
+    build: () => new Timer(),
+  },
+  {
+    label: new Heartbeat().label(),
+    build: () => new Heartbeat(),
+  },
+  {
+    label: new MemoryAllocation().label(),
+    build: () => new MemoryAllocation(),
+  },
+  {
+    label: new ComputeAllocation().label(),
+    build: () => new ComputeAllocation(),
+  },
+  {
+    label: new Ecdsa().label(),
+    build: () => new Ecdsa(),
+  },
+  {
+    label: new Schnorr().label(),
+    build: () => new Schnorr(),
+  },
+  {
+    label: new HttpOutcall().label(),
+    build: () => new HttpOutcall(),
+  },
 ];
-
-function repeatValues(): number[] {
-  return REPEAT.map((x) => x[0]);
-}
-
-function repeatToString(value: number): string {
-  const elem = REPEAT.find((x) => x[0] === value) ?? [0, "Once"];
-  return elem[1];
-}

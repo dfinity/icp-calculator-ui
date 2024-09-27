@@ -9,7 +9,8 @@
   import PagesLine from "./lib/icons/pages-line.svg.svelte";
   import { updateSubnetSize } from "./lib/ts/calc";
   import { Breakdown, Kind } from "./lib/ts/cost";
-  import { features, type Feature } from "./lib/ts/feature";
+  import { FEATURES, type Feature } from "./lib/ts/feature";
+  import { fromJSON, toJSON } from "./lib/ts/json";
   import {
     decentralizedExchange,
     landingPage,
@@ -129,13 +130,58 @@
   function togglePreset() {
     presetVisible = !presetVisible;
   }
+
+  function save() {
+    let a = document.createElement("a");
+    let url = URL.createObjectURL(
+      new Blob([toJSON(userFeatures)], { type: "application/json" }),
+    );
+    a.href = url;
+    a.download = "icp-features.json";
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () {
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    }, 0);
+  }
+
+  function load(e: Event) {
+    let element = e.target as HTMLInputElement;
+    if (!element.files) {
+      return;
+    }
+    let file = element.files[0];
+    if (!file) {
+      return;
+    }
+    let reader = new FileReader();
+    reader.onload = (e) => {
+      let contents = e.target?.result;
+      if (typeof contents === "string") {
+        try {
+          let features = fromJSON(contents);
+          userFeatures = features;
+        } catch (err) {
+          alert(`Failed to load: ${err}`);
+        }
+      }
+    };
+    reader.readAsText(file);
+  }
 </script>
 
 <main>
   <h1>ICP Pricing Calculator<sup>β</sup></h1>
 
   <aside class="l-stack">
-    <a href="#/" on:click={togglePreset}> Load a preset </a> for a quick start
+    <a href="#/" on:click={togglePreset}> Load preset </a> |
+    <a href="#/">
+      <label for="load-file"> Load file </label>
+      <input type="file" id="load-file" on:change={load} accept=".json" />
+    </a>
+    |
+    <a href="#/" on:click={save}> Save file </a>
 
     {#if presetVisible}
       <div class="l-1/2 l-1/1@mobile dropdown l-vertical">
@@ -220,7 +266,7 @@
         </div>
         <aside class="cart__items">
           <div class="toolbar">
-            {#each features as feature}
+            {#each FEATURES as feature}
               <button
                 class="button button--primary l-1/2 l-stack"
                 aria-label="add to cart"
@@ -345,6 +391,15 @@
     flex-direction: row;
     justify-content: center;
     gap: 10px;
+  }
+
+  input[type="file"] {
+    display: none;
+    cursor: pointer;
+  }
+
+  a label {
+    cursor: pointer;
   }
 
   :global(.cart--hidden) .cart__items {

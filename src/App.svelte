@@ -92,7 +92,7 @@
     };
 
     jsonURL = URL.createObjectURL(
-      new Blob([toJSON(config)], { type: "text/plain" }),
+      new Blob([toJSON(config)], { type: "application/json" }),
     );
   }
 

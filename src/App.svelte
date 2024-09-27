@@ -44,6 +44,8 @@
     recurrent: 0,
   };
 
+  let jsonURL = "#/";
+
   $: {
     updateSubnetSize(subnetValues[subnetIndex]);
     let costs = userFeatures.map((feature) => feature.cost());
@@ -77,6 +79,21 @@
     vizData.forEach((data, index) => {
       data.color = colorsForCategories[index];
     });
+
+    if (typeof jsonURL != "string") {
+      URL.revokeObjectURL(jsonURL);
+    }
+
+    const config = {
+      days: vizDays,
+      subnetIndex,
+      subnetValues,
+      features: userFeatures,
+    };
+
+    jsonURL = URL.createObjectURL(
+      new Blob([toJSON(config)], { type: "text/plain" }),
+    );
   }
 
   export let userFeatures: Feature[] = [];
@@ -131,37 +148,25 @@
     presetVisible = !presetVisible;
   }
 
-  function save() {
-    let a = document.createElement("a");
-    let url = URL.createObjectURL(
-      new Blob([toJSON(userFeatures)], { type: "application/json" }),
-    );
-    a.href = url;
-    a.download = "icp-features.json";
-    document.body.appendChild(a);
-    a.click();
-    setTimeout(function () {
-      document.body.removeChild(a);
-      window.URL.revokeObjectURL(url);
-    }, 0);
-  }
-
   function load(e: Event) {
-    let element = e.target as HTMLInputElement;
+    const element = e.target as HTMLInputElement;
     if (!element.files) {
       return;
     }
-    let file = element.files[0];
+    const file = element.files[0];
     if (!file) {
       return;
     }
-    let reader = new FileReader();
+    const reader = new FileReader();
     reader.onload = (e) => {
-      let contents = e.target?.result;
+      const contents = e.target?.result;
       if (typeof contents === "string") {
         try {
-          let features = fromJSON(contents);
-          userFeatures = features;
+          const config = fromJSON(contents);
+          userFeatures = config.features;
+          vizDays = config.days;
+          subnetIndex = config.subnetIndex;
+          subnetValues = config.subnetValues;
         } catch (err) {
           alert(`Failed to load: ${err}`);
         }
@@ -181,7 +186,7 @@
       <input type="file" id="load-file" on:change={load} accept=".json" />
     </a>
     |
-    <a href="#/" on:click={save}> Save file </a>
+    <a href={jsonURL} download="icp-features.json"> Save file </a>
 
     {#if presetVisible}
       <div class="l-1/2 l-1/1@mobile dropdown l-vertical">

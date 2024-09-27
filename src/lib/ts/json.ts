@@ -5,24 +5,41 @@ import { FEATURES, type Feature } from "./feature";
 // loading of old files impossible.
 const VERSION = 1;
 
-export function toJSON(features: Feature[]): string {
+interface Configuration {
+  features: Feature[];
+  days: number;
+  subnetIndex: number;
+  subnetValues: number[];
+}
+
+export function toJSON(config: Configuration): string {
   const json = {
     version: VERSION,
-    features: features.map(serialize),
+    days: config.days,
+    subnetIndex: config.subnetIndex,
+    subnetValues: config.subnetValues,
+    features: config.features.map(serialize),
   };
   return JSON.stringify(json);
 }
 
-export function fromJSON(json: string): Feature[] {
-  const { version, features } = JSON.parse(json);
+export function fromJSON(json: string): Configuration {
+  const { version, days, subnetIndex, subnetValues, features } =
+    JSON.parse(json);
   if (version != VERSION) {
     throw "the file is not compatible with the current version";
   }
-  const result = [];
+  const fs = [];
   for (const x of features) {
-    result.push(deserialize(x));
+    fs.push(deserialize(x));
   }
-  return result;
+  const config = {
+    days,
+    subnetIndex,
+    subnetValues,
+    features: fs,
+  };
+  return config;
 }
 
 function serialize(feature: Feature): object {

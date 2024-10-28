@@ -121,7 +121,7 @@
 
     dex: decentralizedExchange(1000),
 
-    largeData: largeData(100000),
+    largeData: largeData(102400),
 
     custom: [] as Feature[],
   };

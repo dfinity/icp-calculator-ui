@@ -81,8 +81,8 @@ export function decentralizedExchange(tradesPerDay: number): Feature[] {
 export function largeData(users: number): Feature[] {
   const INGRESS_PER_USER = 1;
   const USERS_PER_DAY = 100;
-  const STORAGE_BYTES_PER_USER = 4 * 1000 * 1000; // 4MB
-  const HUNDRED_GB = 100 * 1000 * 1000 * 1000;
+  const STORAGE_BYTES_PER_USER = 4 * 1024 * 1024; // 4MiB
+  const HUNDRED_GB = 100 * 1024 * 1024 * 1024;
 
   const features = [];
 

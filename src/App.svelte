@@ -5,6 +5,7 @@
   import PieChart from "./lib/PieChart.svelte";
   import PieChartLegend from "./lib/PieChartLegend.svelte";
   import CoinsLine from "./lib/icons/coins-line.svg.svelte";
+  import DataLine from "./lib/icons/data-line.svg.svelte";
   import GroupLine from "./lib/icons/group-line.svg.svelte";
   import PagesLine from "./lib/icons/pages-line.svg.svelte";
   import { updateSubnetSize } from "./lib/ts/calc";
@@ -14,6 +15,7 @@
   import {
     decentralizedExchange,
     landingPage,
+    largeData,
     socialNetwork,
   } from "./lib/ts/preset";
   import { spreadArray } from "./lib/ts/spreadArray";
@@ -119,6 +121,8 @@
 
     dex: decentralizedExchange(1000),
 
+    largeData: largeData(100000),
+
     custom: [] as Feature[],
   };
 
@@ -128,7 +132,9 @@
 
   loadPreset("landing");
 
-  function loadPreset(label: "landing" | "social" | "dex" | "custom") {
+  function loadPreset(
+    label: "landing" | "social" | "dex" | "largeData" | "custom",
+  ) {
     if (selectedPreset == "custom") {
       presets.custom = [...userFeatures];
     }
@@ -213,6 +219,14 @@
           <span class="icon">
             <CoinsLine />
           </span>&nbsp;DEX with 1K trades per day
+        </button>
+        <button
+          class="dropdown-item dropdown-item-last l-horizontal"
+          on:click={() => loadPreset("largeData")}
+        >
+          <span class="icon">
+            <DataLine />
+          </span>&nbsp;Large data dapp with 100K total users
         </button>
       </div>
     {/if}

@@ -29,5 +29,5 @@ npm run deploy:dev
 ## Deploying on mainnet
 
 ```
-npm run deploy:dev
+npm run deploy
 ```

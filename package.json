@@ -11,8 +11,8 @@
     "preview": "vite preview",
     "lint": "eslint --max-warnings 0 \"src/**/*\"",
     "check": "svelte-check --tsconfig ./tsconfig.json && tsc -p tsconfig.node.json",
-    "deploy:dev": "vite build && cd canister && rm -rf src/frontend && mkdir -p src/frontend && cp -r ../dist/* src/frontend/ && dfx deploy",
-    "deploy": "vite build && cd canister && rm -rf src/frontend && mkdir -p src/frontend && cp -r ../dist/* src/frontend/ && dfx deploy --ic"
+    "deploy:dev": "rm -rf node_modules/.vite && vite build && cd canister && rm -rf src/frontend && mkdir -p src/frontend && cp -r ../dist/* src/frontend/ && dfx deploy",
+    "deploy": "rm -rf node_modules/.vite && vite build && cd canister && rm -rf src/frontend && mkdir -p src/frontend && cp -r ../dist/* src/frontend/ && dfx deploy --ic"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^3.1.1",

@@ -18,6 +18,16 @@ export function networkValues(): number[] {
   return [0, 256, 512, 1 * KB, 10 * KB, 100 * KB, 1 * MB, 2 * MB];
 }
 
+export function latencyValues(): number[] {
+  return [0, 10, 50, 100, 250, 500, 1000, 2000, 5000, 10_000, 30_000, 60_000];
+}
+
+// The instructions a transform function may run, capped at the instruction
+// limit of a query call, which is what a transform runs as.
+export function transformValues(): number[] {
+  return [0, 100 * K, 500 * K, 1 * M, 10 * M, 100 * M, 1 * B, 5 * B];
+}
+
 export function percentValues(): number[] {
   return [0, 1, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
 }
@@ -46,6 +56,14 @@ export function countToString(value: number): string {
     return `${value / K} K`;
   }
   return `${value}`;
+}
+
+export function latencyToString(millis: number): string {
+  const MILLIS_PER_SECOND = 1000;
+  if (millis >= MILLIS_PER_SECOND) {
+    return `${millis / MILLIS_PER_SECOND} s`;
+  }
+  return `${millis} ms`;
 }
 
 export function percentToString(percent: number): string {

@@ -4,14 +4,18 @@ import {
   type Cycles,
   type Direction,
   type Duration,
+  type HttpOutcallUsage,
   type Instructions,
   type Mode,
   type USD,
 } from "@dfinity/icp-calculator";
 import { type Amount } from "./cost";
 
+const DEFAULT_SUBNET_SIZE = 13;
+
 let calcUSD = calculators().calculatorUSD;
 let calcCycles = calculators().calculatorCycles;
+let currentSubnetSize = DEFAULT_SUBNET_SIZE;
 
 const calcUSD28 = calculators({ subnetSize: 28 }).calculatorUSD;
 const calcCycles28 = calculators({ subnetSize: 28 }).calculatorCycles;
@@ -85,6 +89,12 @@ export function httpOutcall(
   return { usd, cycles };
 }
 
+export function httpOutcallV2(usage: HttpOutcallUsage, count: number): Amount {
+  const usd = (calcUSD.httpOutcallV2(usage) * count) as USD;
+  const cycles = (calcCycles.httpOutcallV2(usage) * count) as Cycles;
+  return { usd, cycles };
+}
+
 export function signWithEcdsa(
   payload: Bytes,
   signature: Bytes,
@@ -110,4 +120,11 @@ export function signWithSchnorr(
 export function updateSubnetSize(subnetSize: number) {
   calcUSD = calculators({ subnetSize }).calculatorUSD;
   calcCycles = calculators({ subnetSize }).calculatorCycles;
+  currentSubnetSize = subnetSize;
+}
+
+// The number of nodes the calculators are currently configured for. An HTTP
+// outcall cannot ask more nodes than that to perform it.
+export function subnetSize(): number {
+  return currentSubnetSize;
 }

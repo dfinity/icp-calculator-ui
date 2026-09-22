@@ -257,7 +257,10 @@
                 type="range"
                 list={subnetValues.map((x) => `${x} nodes`)}
                 value={subnetIndex}
-                onChange={(value) => (subnetIndex = value)}
+                onChange={(value) => {
+                  subnetIndex = value;
+                  userFeatures = userFeatures;
+                }}
               />
             </div>
           </div>
@@ -316,7 +319,7 @@
             aria-label={`feature-${feature}`}
             highlight={feature == newlyAdded}
           >
-            {#each feature.fields() as f, i}
+            {#each feature.fields() as f, i (f.label)}
               <div class="l-horizontal {i > 0 ? 'l-stack' : ''}">
                 {#if i == 0}
                   <strong class="l-grow">{f.label}</strong>
@@ -327,8 +330,15 @@
                   <Number
                     type={f.type}
                     list={f.values}
+                    {...f.min === undefined ? {} : { min: f.min }}
+                    {...f.max === undefined ? {} : { max: f.max }}
                     onChange={(value) => {
                       f.onChange(value);
+                      // A field mutates its feature in place, so `userFeatures`
+                      // has to be invalidated for the new field values to reach
+                      // the inputs. Without it a field that caps another one is
+                      // stuck at the cap it was mounted with.
+                      userFeatures = userFeatures;
                       vizData = [];
                     }}
                     value={f.default}

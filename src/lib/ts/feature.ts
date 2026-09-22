@@ -1037,9 +1037,12 @@ export class HttpOutcall implements Feature {
     return {
       request,
       response,
+      // Without a transform the call delivers what it downloaded, which is
+      // what leaving this unsaid means, and lets it be held to the response
+      // the protocol would have permitted.
       delivered:
         transformInstructions === 0
-          ? response
+          ? undefined
           : (this.response_values[this.delivered_index] as Bytes),
       roundtrip: Duration.fromMillis(this.latency_values[this.latency_index]),
       transformInstructions,

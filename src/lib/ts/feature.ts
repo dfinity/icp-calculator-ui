@@ -53,6 +53,11 @@ export interface Feature {
   cost: () => Breakdown;
   info: () => string;
   label: () => string;
+  // Called after a saved configuration has been overlaid onto a newly built
+  // feature, with the fields the configuration actually carried. A feature
+  // that has gained a field since implements this to keep a configuration
+  // saved without it on the behaviour it was saved under.
+  migrate?: (saved: object) => void;
 }
 
 export class Canister implements Feature {
@@ -779,6 +784,7 @@ export class Heartbeat implements Feature {
 // consumes. Version 1 is still what an outcall gets when it does not ask for a
 // version, but it is deprecated and will be removed.
 const PRICING_VERSIONS = ["Version 1 (deprecated)", "Version 2"];
+const PRICING_VERSION_1 = 0;
 const PRICING_VERSION_2 = 1;
 
 const REPLICATIONS: Array<[Replication, string]> = [
@@ -982,6 +988,16 @@ export class HttpOutcall implements Feature {
 
   label(): string {
     return "HttpOutcall";
+  }
+
+  migrate(saved: object): void {
+    // A configuration saved before version 2 was offered carries no pricing
+    // field, and its response size meant `max_response_bytes` rather than the
+    // bytes that arrive. Leaving it on the new default would not just reprice
+    // it, it would reinterpret what it says, so keep it on version 1.
+    if (!Object.hasOwn(saved, "version_index")) {
+      this.version_index = PRICING_VERSION_1;
+    }
   }
 
   private replication(): Replication {

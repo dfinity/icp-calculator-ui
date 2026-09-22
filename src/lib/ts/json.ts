@@ -64,5 +64,8 @@ function deserialize(object: { label: string; fields: object }): Feature {
       (feature as unknown as Keyed)[f] = (fields as Keyed)[f];
     }
   }
+  // Fields the configuration did not carry are still on the defaults of a
+  // newly built feature, which is not always what the configuration meant.
+  feature.migrate?.(fields);
   return feature;
 }
